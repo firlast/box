@@ -28,7 +28,7 @@ class Commit:
         if until_commit_id:
             filtered_commits = {}
 
-            for cid, cdata in commits:
+            for cid, cdata in commits.items():
                 if cid != until_commit_id:
                     filtered_commits[cid] = cdata
                 else:
