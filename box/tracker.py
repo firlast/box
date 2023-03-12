@@ -39,20 +39,23 @@ class Tracker:
 
         return tracked
 
-    def update_track_info(self, filepath: str, committed: bool) -> None:
+    def update_track_info(self, filepath: str, committed: bool, update_hash: bool) -> None:
         """
         Update `committed` status and file hash from
         tracked file.
 
         :param filepath: File path
         :param committed: File has committed
-        :return: None
+        :param update_hash: If true, this method update the
+        file hash in tracked.
+        :return:
         """
 
         tracked = self.get_tracked()
 
         if filepath in tracked:
-            tracked[filepath]['hash'] = self._get_file_hash(filepath)
+            if update_hash:
+                tracked[filepath]['hash'] = self._get_file_hash(filepath)
             tracked[filepath]['committed'] = committed
             self._dump_tracker(tracked)
         else:
