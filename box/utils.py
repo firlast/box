@@ -1,3 +1,8 @@
+import hashlib
+import secrets
+from typing import List
+
+
 def enumerate_lines(file_lines: list) -> dict:
     lines = enumerate(file_lines)
     return dict(lines)
@@ -21,3 +26,11 @@ def difference_lines(older_enum_lines: dict, new_enum_lines: dict) -> dict:
             difference[number] = line
 
     return difference
+
+
+def generate_id(*complements: List[str]) -> str:
+    id_parts = ''.join((
+        secrets.token_hex(16),
+        *complements
+    ))
+    return hashlib.sha1(id_parts.encode()).hexdigest()
