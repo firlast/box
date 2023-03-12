@@ -1,3 +1,4 @@
+import os
 import hashlib
 import json
 
@@ -5,13 +6,13 @@ from . import exceptions
 
 
 class Tracker:
-    def __init__(self, tracker_filepath: str) -> None:
+    def __init__(self, repo_path: str) -> None:
         """
         Create a new instance from the Tracker class.
-        :param tracker_filepath: A JSON file path
+        :param repo_path: Repository path
         """
 
-        self._tracker_file = tracker_filepath
+        self._tracker_file = os.path.join(repo_path, 'tracker.json')
 
     @staticmethod
     def _get_file_hash(filepath: str) -> str:

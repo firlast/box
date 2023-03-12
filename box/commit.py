@@ -4,9 +4,9 @@ import secrets
 
 
 class Commit:
-    def __init__(self, commit_filepath: str, obj_filepath: str) -> None:
-        self._commit_file = commit_filepath
-        self._obj_file = obj_filepath
+    def __init__(self, repo_path: str) -> None:
+        self._commit_file = os.path.join(repo_path, 'commits.json')
+        self._obj_file = os.path.join(repo_path, 'objects')
 
     def _dump_commit_file(self, data: dict) -> None:
         with open(self._commit_file, 'w') as file:
