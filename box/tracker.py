@@ -13,6 +13,10 @@ class Tracker:
 
         return _hash.hexdigest()
 
+    def _dump_tracker(self, data: dict) -> None:
+        with open(self._tracker_file, 'w') as tracker:
+            json.dump(data, tracker, indent=2)
+
     def get_tracked(self) -> dict:
         try:
             with open(self._tracker_file) as tracker:
