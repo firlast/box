@@ -28,11 +28,11 @@ class Tracker:
 
         return tracked
 
-    def update_track_info(self, filepath: str, _hash: str, committed: bool) -> None:
+    def update_track_info(self, filepath: str, committed: bool) -> None:
         tracked = self.get_tracked()
 
         if filepath in tracked:
-            tracked[filepath]['hash'] = _hash
+            tracked[filepath]['hash'] = self._get_file_hash(filepath)
             tracked[filepath]['committed'] = committed
             self._dump_tracker(tracked)
         else:
