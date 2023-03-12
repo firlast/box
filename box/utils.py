@@ -28,7 +28,7 @@ def difference_lines(older_enum_lines: dict, new_enum_lines: dict) -> dict:
     return difference
 
 
-def generate_id(*complements: List[str]) -> str:
+def generate_id(*complements: str) -> str:
     id_parts = ''.join((
         secrets.token_hex(16),
         *complements
