@@ -1,6 +1,8 @@
 import hashlib
 import json
 
+from . import exceptions
+
 
 class Tracker:
     def __init__(self, tracker_filepath: str) -> None:
@@ -25,3 +27,17 @@ class Tracker:
             tracked = {}
 
         return tracked
+
+    def track(self, filepath: str) -> None:
+        tracked = self.get_tracked()
+
+        if filepath in tracked:
+            raise exceptions.FileAlreadyTrackedError(f'File {filepath} already tracked')
+        else:
+            file_hash = self._get_file_hash(filepath)
+            tracked[filepath] = {
+                'hash': file_hash,
+                'committed': False
+            }
+
+            self._dump_tracker(tracked)
