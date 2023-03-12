@@ -1,6 +1,5 @@
 import os
 import json
-import secrets
 import hashlib
 from typing import List
 from datetime import datetime
@@ -20,14 +19,11 @@ class Commit:
         with open(self._commit_file, 'w') as file:
             json.dump(data, file, indent=2)
 
-    def _create_object(self, file_diff: dict) -> str:
-        object_id = secrets.token_hex(32)
-        object_path = os.path.join(self._obj_file, object_id)
+    def _create_object(self, file_diff: dict, obj_id: str) -> None:
+        object_path = os.path.join(self._obj_file, obj_id)
 
         with open(object_path, 'w') as _object:
             json.dump(file_diff, _object, separators=(',', ':'))
-
-        return object_id
 
     def get_commits(self, until_commit_id: str = None) -> dict:
         try:
@@ -59,23 +55,17 @@ class Commit:
                 raise exceptions.FileNotTrackedError(f'File "{file}" not tracked')
 
         commit_objects = {}
+        commit_datetime = str(datetime.now().replace(microsecond=0))
+        commit_id = utils.generate_id(commit_datetime, message)
 
         for file in files:
             if not tracked[file]['committed']:
                 with open(file, 'r') as file_r:
                     file_enum_lines = utils.enumerate_lines(file_r.readlines())
 
-                obj_id = self._create_object(file_enum_lines)
+                obj_id = utils.generate_id(commit_datetime, message, file)
+                self._create_object(file_enum_lines, obj_id)
                 commit_objects[file] = obj_id
-
-        commit_datetime = str(datetime.now().replace(microsecond=0))
-        id_parts = ''.join((
-            secrets.token_hex(16),
-            message,
-            commit_datetime
-        ))
-
-        commit_id = hashlib.sha1(id_parts.encode()).hexdigest()
 
         commits[commit_id] = dict(
             message=message,
