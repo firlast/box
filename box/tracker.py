@@ -28,11 +28,19 @@ class Tracker:
 
         return tracked
 
+    def update_committed_status(self, filepath: str, committed: bool) -> None:
+        tracked = self.get_tracked()
+
+        if filepath in tracked:
+            tracked[filepath]['committed'] = committed
+        else:
+            raise exceptions.FileNotTrackedError(f'File "{filepath}" not tracked')
+
     def track(self, filepath: str) -> None:
         tracked = self.get_tracked()
 
         if filepath in tracked:
-            raise exceptions.FileAlreadyTrackedError(f'File {filepath} already tracked')
+            raise exceptions.FileAlreadyTrackedError(f'File "{filepath}" already tracked')
         else:
             file_hash = self._get_file_hash(filepath)
             tracked[filepath] = {
