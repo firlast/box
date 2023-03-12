@@ -12,3 +12,12 @@ class Tracker:
             _hash = hashlib.md5(file.read())
 
         return _hash.hexdigest()
+
+    def get_tracked(self) -> dict:
+        try:
+            with open(self._tracker_file) as tracker:
+                tracked = json.load(tracker)
+        except FileNotFoundError:
+            tracked = {}
+
+        return tracked
