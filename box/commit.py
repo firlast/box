@@ -61,11 +61,11 @@ class Commit:
         for file in files:
             if not tracked[file]['committed']:
                 with open(file, 'r') as file_r:
-                    file_enum_lines = utils.enumerate_lines(file_r.readlines())
+                    file_lines = utils.enumerate_lines(file_r.readlines())
 
-                obj_id = utils.generate_id(commit_datetime, message, file)
-                self._create_object(file_enum_lines, obj_id)
-                commit_objects[file] = obj_id
+            obj_id = utils.generate_id(commit_datetime, message, file)
+            commit_objects[file] = obj_id
+            self._create_object(file_lines, obj_id)
 
         commits[commit_id] = dict(
             message=message,
