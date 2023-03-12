@@ -45,9 +45,5 @@ class Tracker:
             raise exceptions.FileAlreadyTrackedError(f'File "{filepath}" already tracked')
         else:
             file_hash = self._get_file_hash(filepath)
-            tracked[filepath] = {
-                'hash': file_hash,
-                'committed': False
-            }
-
+            tracked[filepath] = dict(hash=file_hash, committed=False)
             self._dump_tracker(tracked)
