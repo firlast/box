@@ -6,6 +6,11 @@ from . import exceptions
 
 class Tracker:
     def __init__(self, tracker_filepath: str) -> None:
+        """
+        Create a new instance from the Tracker class.
+        :param tracker_filepath: A JSON file path
+        """
+
         self._tracker_file = tracker_filepath
 
     @staticmethod
@@ -20,6 +25,11 @@ class Tracker:
             json.dump(data, tracker, indent=2)
 
     def get_tracked(self) -> dict:
+        """
+        Get all tracked files.
+        :return: Tracked files
+        """
+
         try:
             with open(self._tracker_file) as tracker:
                 tracked = json.load(tracker)
@@ -29,6 +39,15 @@ class Tracker:
         return tracked
 
     def update_track_info(self, filepath: str, committed: bool) -> None:
+        """
+        Update `committed` status and file hash from
+        tracked file.
+
+        :param filepath: File path
+        :param committed: File has committed
+        :return: None
+        """
+
         tracked = self.get_tracked()
 
         if filepath in tracked:
@@ -39,6 +58,17 @@ class Tracker:
             raise exceptions.FileNotTrackedError(f'File "{filepath}" not tracked')
 
     def track(self, filepath: str) -> None:
+        """
+        Track a new file.
+
+        This method generate a hash from file and add
+        this information to a tracker file specified in
+        `self._tracker_file`.
+
+        :param filepath: File path to track
+        :return: None
+        """
+
         tracked = self.get_tracked()
 
         if filepath in tracked:
