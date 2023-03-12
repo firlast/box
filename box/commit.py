@@ -22,8 +22,11 @@ class Commit:
         return object_id
 
     def get_commits(self, until_commit_id: str = None) -> dict:
-        with open(self._commit_file, 'rb') as file:
-            commits = json.load(file)
+        try:
+            with open(self._commit_file, 'rb') as file:
+                commits = json.load(file)
+        except FileNotFoundError:
+            commits = {}
 
         if until_commit_id:
             filtered_commits = {}
