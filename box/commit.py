@@ -74,7 +74,7 @@ class Commit:
                 with open(file, 'r') as file_r:
                     file_lines = utils.enumerate_lines(file_r.readlines())
 
-                self._tracker.update_track_info(committed=True)
+                self._tracker.update_track_info(file, committed=True)
 
             obj_id = utils.generate_id(commit_datetime, message, file)
             commit_objects[file] = obj_id
