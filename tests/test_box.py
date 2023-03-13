@@ -1,17 +1,20 @@
 import os
+import shutil
 
 import bupytest
 from box import tracker
-from box import commit
 
 FILE_TESTS_DIR = os.path.join(os.getcwd(), 'files')
 REPO_DIR = os.path.join(os.getcwd(), '.box')
 
-if not os.path.isdir(FILE_TESTS_DIR):
-    os.mkdir(FILE_TESTS_DIR)
+if os.path.isdir(FILE_TESTS_DIR):
+    shutil.rmtree(FILE_TESTS_DIR, ignore_errors=True)
 
-if not os.path.isdir(REPO_DIR):
-    os.mkdir(REPO_DIR)
+if os.path.isdir(REPO_DIR):
+    shutil.rmtree(REPO_DIR, ignore_errors=True)
+
+os.mkdir(FILE_TESTS_DIR)
+os.mkdir(REPO_DIR)
 
 TEST_FILE_1 = os.path.join(FILE_TESTS_DIR, 'readme.md')
 TEST_FILE_2 = os.path.join(FILE_TESTS_DIR, 'hello.txt')
