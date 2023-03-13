@@ -17,7 +17,7 @@ def difference_lines(older_enum_lines: dict, new_enum_lines: dict) -> dict:
         if not new_line:
             difference[number] = None
         elif new_line != line:
-            difference[number] = line
+            difference[number] = new_line
 
     # get new lines
     for number, line in new_enum_lines.items():
