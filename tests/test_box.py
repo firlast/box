@@ -1,12 +1,17 @@
 import os
+import sys
 import shutil
 
 import bupytest
+
+sys.path.insert(0, './')
+
 from box import tracker
 from box import commit
 
-FILE_TESTS_DIR = os.path.join(os.getcwd(), 'files')
+FILE_TESTS_DIR = os.path.join('./', 'files')
 REPO_DIR = os.path.join(os.getcwd(), '.box')
+OBJECT_DIR = os.path.join(REPO_DIR, 'objects')
 
 if os.path.isdir(FILE_TESTS_DIR):
     shutil.rmtree(FILE_TESTS_DIR, ignore_errors=True)
@@ -16,6 +21,7 @@ if os.path.isdir(REPO_DIR):
 
 os.mkdir(FILE_TESTS_DIR)
 os.mkdir(REPO_DIR)
+os.mkdir(OBJECT_DIR)
 
 TEST_FILE_1 = os.path.join(FILE_TESTS_DIR, 'readme.md')
 TEST_FILE_2 = os.path.join(FILE_TESTS_DIR, 'hello.txt')
@@ -106,6 +112,24 @@ class TestCommit(bupytest.UnitTest):
     def test_get_commits(self):
         commits = _commit.get_commits()
         self.assert_expected(commits, {})
+
+    def test_commit(self):
+        _tracker.update_track_info(TEST_FILE_1, committed=False)
+        commit_id = _commit.commit([TEST_FILE_1, TEST_FILE_2], message='first commit')
+        commits = _commit.get_commits()
+
+        self.assert_expected(len(commits), 1, message='Incorrect commits number')
+        self.assert_true(commits.get(commit_id), message='Commit ID not found')
+        self.assert_true(commits[commit_id]['message'], 'first commit')
+        self.assert_expected(len(commits[commit_id]['objects']), 2, message='Expected 2 objects references')
+
+        file_1_object_path = os.path.join('./.box/objects', commits[commit_id]['objects'][TEST_FILE_1])
+        file_2_object_path = os.path.join('./.box/objects', commits[commit_id]['objects'][TEST_FILE_1])
+
+        self.assert_true(os.path.isfile(file_1_object_path),
+                         message=f'Object to {repr(TEST_FILE_1)} not created')
+        self.assert_true(os.path.isfile(file_2_object_path),
+                         message=f'Object to {repr(TEST_FILE_2)} not created')
 
 
 if __name__ == '__main__':
