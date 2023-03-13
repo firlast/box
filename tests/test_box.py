@@ -103,6 +103,10 @@ class TestCommit(bupytest.UnitTest):
     def __init__(self):
         super().__init__()
 
+    def test_get_commits(self):
+        commits = _commit.get_commits()
+        self.assert_expected(commits, {})
+
 
 if __name__ == '__main__':
     bupytest.this()
