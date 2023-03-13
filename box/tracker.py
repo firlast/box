@@ -39,7 +39,7 @@ class Tracker:
 
         return tracked
 
-    def update_track_info(self, filepath: str, committed: bool, update_hash: bool) -> None:
+    def update_track_info(self, filepath: str, committed: bool, update_hash: bool = False) -> None:
         """
         Update `committed` status and file hash from
         tracked file.
