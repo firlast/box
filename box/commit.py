@@ -111,6 +111,7 @@ class Commit:
                 for obj_id in file_objects:
                     merged_lines.update(self._get_object(obj_id))
 
+                self._tracker.update_track_info(file, committed=True, update_hash=True)
                 file_lines = utils.difference_lines(merged_lines, file_lines)
 
             obj_id = utils.generate_id(commit_datetime, message, file)
