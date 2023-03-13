@@ -39,6 +39,15 @@ class Tracker:
 
         return tracked
 
+    def get_tracked_file(self, filepath: str) -> dict:
+        tracked = self.get_tracked()
+        try:
+            file_tracked = tracked[filepath]
+        except KeyError:
+            raise exceptions.FileNotTrackedError(f'File {repr(file_tracked)} not tracked')
+
+        return file_tracked
+
     def update_track_info(self, filepath: str, committed: bool, update_hash: bool = False) -> None:
         """
         Update `committed` status and file hash from
