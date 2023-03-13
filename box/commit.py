@@ -92,7 +92,7 @@ class Commit:
         commits[commit_id] = dict(
             message=message,
             date=str(commit_datetime),
-            objects=object,
+            objects=commit_objects,
         )
 
         self._dump_commit_file(commits)
