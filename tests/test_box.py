@@ -55,11 +55,24 @@ class TestTracker(bupytest.UnitTest):
         self.tracker.track(TEST_FILE_1)
         tracked = self.tracker.get_tracked()
 
-        self.assert_true(TEST_FILE_1 in tracked, message='File not found in tracked data')
+        self.assert_true(len(tracked) == 1, message='Tracked data larger than necessary')
+        self.assert_true(tracked.get(TEST_FILE_1), message='File not found in tracked data')
         self.assert_expected(
             value=tracked[TEST_FILE_1]['committed'],
             expected=False,
-            message='File not found in tracked data'
+            message='Committed status is not False'
+        )
+
+    def test_track_other_file(self):
+        self.tracker.track(TEST_FILE_2)
+        tracked = self.tracker.get_tracked()
+
+        self.assert_true(len(tracked) == 2, message='Tracked data larger (or smaller) than necessary')
+        self.assert_true(tracked.get(TEST_FILE_2), message='File not found in tracked data')
+        self.assert_expected(
+            value=tracked[TEST_FILE_2]['committed'],
+            expected=False,
+            message='Committed status is not False'
         )
 
 
