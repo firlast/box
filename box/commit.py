@@ -1,6 +1,5 @@
 import os
 import json
-import hashlib
 from typing import List
 from datetime import datetime
 
@@ -88,3 +87,4 @@ class Commit:
         )
 
         self._dump_commit_file(commits)
+        return commit_id
