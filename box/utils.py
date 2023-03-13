@@ -1,11 +1,10 @@
 import hashlib
 import secrets
-from typing import List
 
 
 def enumerate_lines(file_lines: list) -> dict:
     lines = enumerate(file_lines)
-    return dict(lines)
+    return dict((str(ln), l) for ln, l in lines)
 
 
 def difference_lines(older_enum_lines: dict, new_enum_lines: dict) -> dict:
