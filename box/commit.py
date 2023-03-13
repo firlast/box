@@ -70,11 +70,20 @@ class Commit:
         commit_id = utils.generate_id(commit_datetime, message)
 
         for file in files:
-            if not tracked[file]['committed']:
-                with open(file, 'r') as file_r:
-                    file_lines = utils.enumerate_lines(file_r.readlines())
+            with open(file, 'r') as file_r:
+                file_lines = utils.enumerate_lines(file_r.readlines())
 
+            if not tracked[file]['committed']:
                 self._tracker.update_track_info(file, committed=True)
+            else:
+                file_commits = self._get_file_commits(file)
+                file_objects = [commit['objects'][file] for commit in file_commits.values()]
+                merged_lines = {}
+
+                for obj_id in file_objects:
+                    merged_lines.update(self._get_object(obj_id))
+
+                file_lines = utils.difference_lines(merged_lines, file_lines)
 
             obj_id = utils.generate_id(commit_datetime, message, file)
             commit_objects[file] = obj_id
