@@ -141,29 +141,49 @@ class TestCommit(bupytest.UnitTest):
         with open(TEST_FILE_1, 'w') as file_1:
             file_1.write(TEST_FILE_1_CONTENT_CHANGED)
 
-        commit_id = _commit.commit([TEST_FILE_1], message='second commit')
+        with open(TEST_FILE_2, 'w') as file_2:
+            file_2.write(TEST_FILE_2_CONTENT_CHANGED)
+
+        commit_id = _commit.commit([TEST_FILE_1, TEST_FILE_2], message='second commit')
         commits = _commit.get_commits()
 
         self.assert_expected(len(commits), 2, message='Incorrect commits number')
         self.assert_true(commits.get(commit_id), message='Commit ID not found')
         self.assert_true(commits[commit_id]['message'], 'second commit')
-        self.assert_expected(len(commits[commit_id]['objects']), 1, message='Expected 1 object reference')
+        self.assert_expected(len(commits[commit_id]['objects']), 2, message='Expected 1 object reference')
 
         file_1_object_path = os.path.join('./.box/objects', commits[commit_id]['objects'][TEST_FILE_1])
+        file_2_object_path = os.path.join('./.box/objects', commits[commit_id]['objects'][TEST_FILE_2])
 
         self.assert_true(
             value=os.path.isfile(file_1_object_path),
             message=f'Object to {repr(TEST_FILE_1)} not created'
         )
 
+        self.assert_true(
+            value=os.path.isfile(file_2_object_path),
+            message=f'Object to {repr(TEST_FILE_2)} not created'
+        )
+
         with open(file_1_object_path, 'r') as object_file:
-            object_lines = json.load(object_file)
+            file_1_object_lines = json.load(object_file)
+
+        with open(file_2_object_path, 'r') as object_file:
+            file_2_object_lines = json.load(object_file)
 
         self.assert_expected(
-            value=object_lines,
+            value=file_1_object_lines,
             expected={
                 '1': 'This is a test!\n',
                 '2': 'A big test!'
+            }
+        )
+
+        # "None" is a deleted line
+        self.assert_expected(
+            value=file_2_object_lines,
+            expected={
+                '1': None
             }
         )
 
