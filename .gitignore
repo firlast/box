@@ -1,3 +1,11 @@
 .idea/
+
+# python
 venv/
 __pycache__/
+
+# unit test
+tests/files
+
+# box repository
+*.box
