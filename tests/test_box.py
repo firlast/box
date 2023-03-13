@@ -63,7 +63,7 @@ class TestTracker(bupytest.UnitTest):
         super().__init__()
 
     def test_track(self):
-        _tracker.track(TEST_FILE_1)
+        _tracker.track([TEST_FILE_1])
         tracked = _tracker.get_tracked()
 
         self.assert_true(len(tracked) == 1, message='Tracked data larger than necessary')
@@ -78,7 +78,7 @@ class TestTracker(bupytest.UnitTest):
         self._tracked_file_committed = tracked[TEST_FILE_1]['committed']
 
     def test_track_other_file(self):
-        _tracker.track(TEST_FILE_2)
+        _tracker.track([TEST_FILE_2])
         tracked = _tracker.get_tracked()
 
         self.assert_true(len(tracked) == 2, message='Tracked data larger (or smaller) than necessary')
