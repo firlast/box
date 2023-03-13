@@ -63,6 +63,9 @@ class TestTracker(bupytest.UnitTest):
             message='Committed status is not False'
         )
 
+        self._tracked_file_hash = tracked[TEST_FILE_1]['hash']
+        self._tracked_file_committed = tracked[TEST_FILE_1]['committed']
+
     def test_track_other_file(self):
         self.tracker.track(TEST_FILE_2)
         tracked = self.tracker.get_tracked()
@@ -73,6 +76,22 @@ class TestTracker(bupytest.UnitTest):
             value=tracked[TEST_FILE_2]['committed'],
             expected=False,
             message='Committed status is not False'
+        )
+
+    def test_update_committed_status(self):
+        self.tracker.update_track_info(TEST_FILE_1, committed=True)
+        tracked = self.tracker.get_tracked()
+
+        self.assert_expected(
+            value=tracked[TEST_FILE_1]['hash'],
+            expected=self._tracked_file_hash,
+            message='Hash updated unnecessarily'
+        )
+
+        self.assert_expected(
+            value=tracked[TEST_FILE_1]['committed'],
+            expected=True,
+            message='Committed status not updated'
         )
 
 
