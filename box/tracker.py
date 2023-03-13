@@ -44,7 +44,7 @@ class Tracker:
         try:
             file_tracked = tracked[filepath]
         except KeyError:
-            raise exceptions.FileNotTrackedError(f'File {repr(file_tracked)} not tracked')
+            raise exceptions.FileNotTrackedError(f'File {repr(filepath)} not tracked')
 
         return file_tracked
 
