@@ -24,17 +24,17 @@ TEST_FILE_1_CONTENT = (
 
 TEST_FILE_1_CONTENT_CHANGED = (
     '# Box Version Control Test\n'
-    'This is a test!\n',
+    'This is a test!\n'
     'A big test!'
 )
 
 TEST_FILE_2_CONTENT = (
-    'Hello Word!\n',
+    'Hello Word!\n'
     'How are you?'
 )
 
 TEST_FILE_2_CONTENT_CHANGED = (
-    'Hello Word!\n',
+    'Hello Word!\n'
 )
 
 if __name__ == '__main__':
