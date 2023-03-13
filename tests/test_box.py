@@ -46,14 +46,16 @@ with open(TEST_FILE_2, 'w') as file:
     file.write(TEST_FILE_2_CONTENT)
 
 
+_tracker = tracker.Tracker(REPO_DIR)
+
+
 class TestTracker(bupytest.UnitTest):
     def __init__(self):
         super().__init__()
-        self.tracker = tracker.Tracker(REPO_DIR)
 
     def test_track(self):
-        self.tracker.track(TEST_FILE_1)
-        tracked = self.tracker.get_tracked()
+        _tracker.track(TEST_FILE_1)
+        tracked = _tracker.get_tracked()
 
         self.assert_true(len(tracked) == 1, message='Tracked data larger than necessary')
         self.assert_true(tracked.get(TEST_FILE_1), message='File not found in tracked data')
@@ -67,8 +69,8 @@ class TestTracker(bupytest.UnitTest):
         self._tracked_file_committed = tracked[TEST_FILE_1]['committed']
 
     def test_track_other_file(self):
-        self.tracker.track(TEST_FILE_2)
-        tracked = self.tracker.get_tracked()
+        _tracker.track(TEST_FILE_2)
+        tracked = _tracker.get_tracked()
 
         self.assert_true(len(tracked) == 2, message='Tracked data larger (or smaller) than necessary')
         self.assert_true(tracked.get(TEST_FILE_2), message='File not found in tracked data')
@@ -79,8 +81,8 @@ class TestTracker(bupytest.UnitTest):
         )
 
     def test_update_committed_status(self):
-        self.tracker.update_track_info(TEST_FILE_1, committed=True)
-        tracked = self.tracker.get_tracked()
+        _tracker.update_track_info(TEST_FILE_1, committed=True)
+        tracked = _tracker.get_tracked()
 
         self.assert_expected(
             value=tracked[TEST_FILE_1]['hash'],
