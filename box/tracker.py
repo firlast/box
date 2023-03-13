@@ -70,23 +70,24 @@ class Tracker:
         else:
             raise exceptions.FileNotTrackedError(f'File "{filepath}" not tracked')
 
-    def track(self, filepath: str) -> None:
+    def track(self, files_list: list) -> None:
         """
-        Track a new file.
+        Track a new files.
 
         This method generate a hash from file and add
         this information to a tracker file specified in
         `self._tracker_file`.
 
-        :param filepath: File path to track
+        :param files_list: Files path to track
         :return: None
         """
 
         tracked = self.get_tracked()
 
-        if filepath in tracked:
-            raise exceptions.FileAlreadyTrackedError(f'File "{filepath}" already tracked')
-        else:
-            file_hash = self.get_file_hash(filepath)
-            tracked[filepath] = dict(hash=file_hash, committed=False)
-            self._dump_tracker(tracked)
+        for filepath in files_list:
+            if filepath in tracked:
+                raise exceptions.FileAlreadyTrackedError(f'File "{filepath}" already tracked')
+            else:
+                file_hash = self.get_file_hash(filepath)
+                tracked[filepath] = dict(hash=file_hash, committed=False)
+                self._dump_tracker(tracked)
