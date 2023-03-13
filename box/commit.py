@@ -10,6 +10,11 @@ from . import utils
 
 class Commit:
     def __init__(self, repo_path: str) -> None:
+        """
+        This class handles everything about `commits`.
+        :param repo_path: Repository path
+        """
+
         self._commit_file = os.path.join(repo_path, 'commits.json')
         self._obj_file = os.path.join(repo_path, 'objects')
         self._tracker = Tracker(repo_path)
@@ -37,6 +42,15 @@ class Commit:
         return file_commits
 
     def get_commits(self, until_commit_id: str = None) -> dict:
+        """
+        Get all commits in `dict` format. The commit
+        data contains commit datetime, message and
+        objects references.
+
+        :param until_commit_id: Get all commits until a commit ID.
+        :return: Commits
+        """
+
         try:
             with open(self._commit_file, 'rb') as file:
                 commits = json.load(file)
@@ -57,6 +71,20 @@ class Commit:
         return commits
 
     def commit(self, files: List[str], message: str) -> str:
+        """
+        Commit files with a message.
+
+        If is the first file commit, this method enumerate
+        all file lines and store this in an "object", the
+        object ID is stored in commit data. Otherwise, this method
+        gets the difference of all merged file commits from
+        enumerate file lines and store this difference.
+
+        :param files: Files to commit
+        :param message: A message to describe this change
+        :return: Commit ID
+        """
+
         tracked = self._tracker.get_tracked()
         commits = self.get_commits()
 
