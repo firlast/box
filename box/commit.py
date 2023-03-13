@@ -25,6 +25,13 @@ class Commit:
         with open(object_path, 'w') as _object:
             json.dump(file_diff, _object, separators=(',', ':'))
 
+    def _get_object(self, object_id: str) -> dict:
+        object_path = os.path.join(self._obj_file, object_id)
+        with open(object_path, 'rb') as file:
+            object_data = json.load(file)
+
+        return object_data
+
     def get_commits(self, until_commit_id: str = None) -> dict:
         try:
             with open(self._commit_file, 'rb') as file:
