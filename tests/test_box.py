@@ -3,6 +3,7 @@ import shutil
 
 import bupytest
 from box import tracker
+from box import commit
 
 FILE_TESTS_DIR = os.path.join(os.getcwd(), 'files')
 REPO_DIR = os.path.join(os.getcwd(), '.box')
@@ -47,6 +48,7 @@ with open(TEST_FILE_2, 'w') as file:
 
 
 _tracker = tracker.Tracker(REPO_DIR)
+_commit = commit.Commit(REPO_DIR)
 
 
 class TestTracker(bupytest.UnitTest):
@@ -95,6 +97,11 @@ class TestTracker(bupytest.UnitTest):
             expected=True,
             message='Committed status not updated'
         )
+
+
+class TestCommit(bupytest.UnitTest):
+    def __init__(self):
+        super().__init__()
 
 
 if __name__ == '__main__':
