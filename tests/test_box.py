@@ -1,5 +1,4 @@
 import os
-import sys
 
 import bupytest
 from box import tracker
@@ -36,6 +35,30 @@ TEST_FILE_2_CONTENT = (
 TEST_FILE_2_CONTENT_CHANGED = (
     'Hello Word!\n'
 )
+
+with open(TEST_FILE_1, 'w') as file:
+    file.write(TEST_FILE_1_CONTENT)
+
+with open(TEST_FILE_2, 'w') as file:
+    file.write(TEST_FILE_2_CONTENT)
+
+
+class TestTracker(bupytest.UnitTest):
+    def __init__(self):
+        super().__init__()
+        self.tracker = tracker.Tracker(REPO_DIR)
+
+    def test_track(self):
+        self.tracker.track(TEST_FILE_1)
+        tracked = self.tracker.get_tracked()
+
+        self.assert_true(TEST_FILE_1 in tracked, message='File not found in tracked data')
+        self.assert_expected(
+            value=tracked[TEST_FILE_1]['committed'],
+            expected=False,
+            message='File not found in tracked data'
+        )
+
 
 if __name__ == '__main__':
     bupytest.this()
