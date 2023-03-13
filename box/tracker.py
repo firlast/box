@@ -15,7 +15,7 @@ class Tracker:
         self._tracker_file = os.path.join(repo_path, 'tracker.json')
 
     @staticmethod
-    def _get_file_hash(filepath: str) -> str:
+    def get_file_hash(filepath: str) -> str:
         with open(filepath, 'rb') as file:
             _hash = hashlib.md5(file.read())
 
@@ -64,7 +64,7 @@ class Tracker:
 
         if filepath in tracked:
             if update_hash:
-                tracked[filepath]['hash'] = self._get_file_hash(filepath)
+                tracked[filepath]['hash'] = self.get_file_hash(filepath)
             tracked[filepath]['committed'] = committed
             self._dump_tracker(tracked)
         else:
@@ -87,6 +87,6 @@ class Tracker:
         if filepath in tracked:
             raise exceptions.FileAlreadyTrackedError(f'File "{filepath}" already tracked')
         else:
-            file_hash = self._get_file_hash(filepath)
+            file_hash = self.get_file_hash(filepath)
             tracked[filepath] = dict(hash=file_hash, committed=False)
             self._dump_tracker(tracked)
