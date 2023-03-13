@@ -32,6 +32,11 @@ class Commit:
 
         return object_data
 
+    def _get_file_commits(self, filename: str) -> dict:
+        commits = self.get_commits()
+        file_commits = {cid: cdata for cid, cdata in commits.items() if filename in cdata['objects']}
+        return file_commits
+
     def get_commits(self, until_commit_id: str = None) -> dict:
         try:
             with open(self._commit_file, 'rb') as file:
