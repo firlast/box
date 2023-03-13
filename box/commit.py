@@ -103,7 +103,7 @@ class Commit:
 
             if not tracked[file]['committed']:
                 self._tracker.update_track_info(file, committed=True)
-            else:
+            elif self._tracker.get_tracked_file(file)['hash'] != self._tracker.get_file_hash(file):
                 file_commits = self._get_file_commits(file)
                 file_objects = [commit['objects'][file] for commit in file_commits.values()]
                 merged_lines = {}
@@ -113,6 +113,9 @@ class Commit:
 
                 self._tracker.update_track_info(file, committed=True, update_hash=True)
                 file_lines = utils.difference_lines(merged_lines, file_lines)
+            else:
+                # ignore files without changes
+                continue
 
             obj_id = utils.generate_id(commit_datetime, message, file)
             commit_objects[file] = obj_id
