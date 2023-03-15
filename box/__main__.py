@@ -1,5 +1,6 @@
 import os
 import sys
+from typing import Union
 
 from argeasy import ArgEasy
 
@@ -13,6 +14,13 @@ OBJECTS_PATH = os.path.join(REPO_PATH, 'objects')
 
 tracker = Tracker(REPO_PATH)
 commit = Commit(REPO_PATH)
+
+
+def _get_uncommitted_files(tracked: dict) -> list:
+    return [filepath for filepath, info in tracked.items() if not info['committed']]
+
+def _get_untracked_files(non_ignored: list, tracked: dict) -> list:
+    return [file for file in non_ignored if file not in tracked]
 
 
 def init() -> None:
@@ -38,8 +46,8 @@ def status() -> None:
     non_ignored = get_non_ignored()
     tracked_files = tracker.get_tracked()
 
-    uncommitted = [filepath for filepath, info in tracked_files.items() if not info['committed']]
-    untracked = [file for file in non_ignored if file not in tracked_files]
+    uncommitted = _get_uncommitted_files(tracked_files)
+    untracked = _get_untracked_files(non_ignored, tracked_files)
 
     print('\033[1mUncommitted files\033[m')
 
@@ -62,6 +70,35 @@ def status() -> None:
     print('\033[m')
 
 
+def _commit(files: Union[list, str], message: str) -> None:
+    if not message:
+        print('\033[1;31mA short message is required to commit\033[m')
+        print('\033[33mUse "-m" flag and insert a message to commit\033[m')
+        sys.exit(1)
+
+    tracked = tracker.get_tracked()
+    uncommitted = _get_uncommitted_files(tracked)
+
+    if files == "*":
+        commit_id = commit.commit(uncommitted, message)
+        files = tracked.keys()
+    else:
+        for file in files:
+            if not os.path.isfile(file):
+                print(f'\033[1;31mFile {repr(file)} not tracked for commit\033[m')
+                print('\033[33mUse "add" argument to track this file\033[m')
+                sys.exit(1)
+            elif file not in tracked:
+                print(f'\033[1;31mFile {repr(file)} not tracked for commit\033[m')
+                print('\033[33mUse "add" argument to track this file\033[m')
+                sys.exit(1)
+
+        commit_id = commit.commit(uncommitted, message)
+
+    print(f'Commit #\033[4m{commit_id[:7]}\033[m "{message}"')
+    print(f'\033[33m{len(files)} files committed\033[m')
+
+
 def main() -> None:
     parser = ArgEasy(
         name='Box',
@@ -70,8 +107,12 @@ def main() -> None:
     )
 
     parser.add_argument('init', 'Init a empty repository', action='store_true')
-    parser.add_argument('add', 'Add new files to track list', action='append')
     parser.add_argument('status', 'View uncommitted and untracked files', action='store_true')
+    parser.add_argument('add', 'Add new files to track list', action='append')
+    parser.add_argument('commit', 'Commit files', action='append')
+
+    parser.add_flag('-m', 'A short message to commit')
+
     args = parser.parse()
 
     if args.init:
@@ -80,3 +121,5 @@ def main() -> None:
         add(args.add)
     elif args.status:
         status()
+    elif args.commit:
+        _commit(args.commit, args.m)
