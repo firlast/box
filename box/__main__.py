@@ -8,7 +8,7 @@ from .tracker import Tracker
 from .commit import Commit
 from .ignore import get_non_ignored
 
-REPO_PATH = os.path.join('./', '.box')
+REPO_PATH = '.box'
 OBJECTS_PATH = os.path.join(REPO_PATH, 'objects')
 
 tracker = Tracker(REPO_PATH)
@@ -38,19 +38,26 @@ def status() -> None:
     non_ignored = get_non_ignored()
     tracked_files = tracker.get_tracked()
 
-    print('\033[1mUncommitted files\033[m')
-    print('Use "commit" argument to commit this files:\033[33m')
+    uncommitted = [filepath for filepath, info in tracked_files.items() if not info['committed']]
+    untracked = [file for file in non_ignored if file not in tracked_files]
 
-    for filepath, info in tracked_files.items():
-        if not info['committed']:
-            print('   ' + filepath.replace('./', ''))
+    print('\033[1mUncommitted files\033[m')
+
+    if uncommitted:
+        print(f'Use "commit" argument to commit {len(uncommitted)} files:\033[33m')
+        for file in uncommitted:
+            print('   ' + file)
+    else:
+        print('0 files found for commit')
 
     print('\n\033[37;1mUntracked files\033[m')
-    print('Use "add" argument to track this files:\033[33m')
 
-    for filepath in non_ignored:
-        if filepath not in tracked_files:
-            print('   ' + filepath.replace('./', ''))
+    if untracked:
+        print(f'Use "add" argument to track {len(untracked)} files:\033[33m')
+        for file in untracked:
+            print('   ' + file)
+    else:
+        print('0 files found for tracking')
 
     print('\033[m')
 
