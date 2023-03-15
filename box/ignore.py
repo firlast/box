@@ -23,7 +23,7 @@ def _load_ignore() -> list:
     return ignored
 
 
-def _get_non_ignored() -> list:
+def get_non_ignored() -> list:
     ignored = _load_ignore()
     non_ignored = []
 
