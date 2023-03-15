@@ -24,6 +24,7 @@ def _load_ignore() -> list:
         filelist = [file.replace('\n', '') for file in filelist]
         ignored = list(map(_filter_filelist, filelist))
 
+    ignored.append('.box')
     return ignored
 
 
