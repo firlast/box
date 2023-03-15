@@ -15,11 +15,15 @@ def _path_has_ignored(ignored: list, path: str) -> bool:
 
 
 def _load_ignore() -> list:
-    with open('.ignore', 'r') as ignore_file:
-        filelist = ignore_file.readlines()
+    try:
+        with open('.ignore', 'r') as ignore_file:
+            filelist = ignore_file.readlines()
+    except FileNotFoundError:
+        ignored = []
+    else:
+        filelist = [file.replace('\n', '') for file in filelist]
+        ignored = list(map(_filter_filelist, filelist))
 
-    filelist = [file.replace('\n', '') for file in filelist]
-    ignored = list(map(_filter_filelist, filelist))
     return ignored
 
 
