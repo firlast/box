@@ -32,11 +32,11 @@ def get_non_ignored() -> list:
     ignored = _load_ignore()
     non_ignored = []
 
-    for root, dirs, files in os.walk('./'):
+    for root, dirs, files in os.walk('.'):
         if not _path_has_ignored(ignored, root):
             for file in files:
                 filepath = os.path.join(root, file)
                 if not _path_has_ignored(ignored, filepath):
-                    non_ignored.append(filepath)
+                    non_ignored.append(filepath.replace('./', ''))
 
     return non_ignored
