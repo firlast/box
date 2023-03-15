@@ -10,8 +10,8 @@ sys.path.insert(0, './')
 from box import tracker
 from box import commit
 
-FILE_TESTS_DIR = os.path.join('./', 'files')
-REPO_DIR = os.path.join(os.getcwd(), '.box')
+FILE_TESTS_DIR = os.path.join('./tests', 'files')
+REPO_DIR = os.path.join('./tests', '.box')
 OBJECT_DIR = os.path.join(REPO_DIR, 'objects')
 
 if os.path.isdir(FILE_TESTS_DIR):
@@ -124,8 +124,8 @@ class TestCommit(bupytest.UnitTest):
         self.assert_true(commits[commit_id]['message'], 'first commit')
         self.assert_expected(len(commits[commit_id]['objects']), 2, message='Expected 2 objects references')
 
-        file_1_object_path = os.path.join('./.box/objects', commits[commit_id]['objects'][TEST_FILE_1])
-        file_2_object_path = os.path.join('./.box/objects', commits[commit_id]['objects'][TEST_FILE_2])
+        file_1_object_path = os.path.join(OBJECT_DIR, commits[commit_id]['objects'][TEST_FILE_1])
+        file_2_object_path = os.path.join(OBJECT_DIR, commits[commit_id]['objects'][TEST_FILE_2])
 
         self.assert_true(
             value=os.path.isfile(file_1_object_path),
@@ -152,8 +152,8 @@ class TestCommit(bupytest.UnitTest):
         self.assert_true(commits[commit_id]['message'], 'second commit')
         self.assert_expected(len(commits[commit_id]['objects']), 2, message='Expected 1 object reference')
 
-        file_1_object_path = os.path.join('./.box/objects', commits[commit_id]['objects'][TEST_FILE_1])
-        file_2_object_path = os.path.join('./.box/objects', commits[commit_id]['objects'][TEST_FILE_2])
+        file_1_object_path = os.path.join(OBJECT_DIR, commits[commit_id]['objects'][TEST_FILE_1])
+        file_2_object_path = os.path.join(OBJECT_DIR, commits[commit_id]['objects'][TEST_FILE_2])
 
         self.assert_true(
             value=os.path.isfile(file_1_object_path),
@@ -186,7 +186,3 @@ class TestCommit(bupytest.UnitTest):
                 '1': None
             }
         )
-
-
-if __name__ == '__main__':
-    bupytest.this()
