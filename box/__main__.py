@@ -19,11 +19,12 @@ commit = Commit(REPO_PATH)
 def _get_uncommitted_files(tracked: dict) -> list:
     return [filepath for filepath, info in tracked.items() if not info['committed']]
 
+
 def _get_untracked_files(non_ignored: list, tracked: dict) -> list:
     return [file for file in non_ignored if file not in tracked]
 
 
-def init() -> None:
+def _init() -> None:
     if os.path.isdir(REPO_PATH):
         print(f'\033[33mRepository already started in {repr(REPO_PATH)}\033[m')
         sys.exit(1)
@@ -33,7 +34,7 @@ def init() -> None:
         print(f'\033[32mNew repository started in {repr(REPO_PATH)}\033[m')
 
 
-def add(files: list) -> None:
+def _add(files: list) -> None:
     for file in files:
         if not os.path.isfile(file):
             print(f'\033[31mFile {repr(file)} not exists in current directory\033[m')
@@ -42,7 +43,7 @@ def add(files: list) -> None:
     tracker.track(files)
 
 
-def status() -> None:
+def _status() -> None:
     non_ignored = get_non_ignored()
     tracked_files = tracker.get_tracked()
 
@@ -116,10 +117,10 @@ def main() -> None:
     args = parser.parse()
 
     if args.init:
-        init()
+        _init()
     elif args.add:
-        add(args.add)
+        _add(args.add)
     elif args.status:
-        status()
+        _status()
     elif args.commit:
         _commit(args.commit, args.m)
