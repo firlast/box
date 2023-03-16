@@ -34,7 +34,14 @@ def _init() -> None:
         print(f'\033[32mNew repository started in {repr(REPO_PATH)}\033[m')
 
 
-def _add(files: list) -> None:
+def _add(files: Union[list, str]) -> None:
+    non_ignored = get_non_ignored()
+    tracked = tracker.get_tracked()
+    untracked = _get_untracked_files(non_ignored, tracked)
+
+    if files == "*":
+        files = untracked
+
     for file in files:
         if not os.path.isfile(file):
             print(f'\033[31mFile {repr(file)} not exists in current directory\033[m')
@@ -123,6 +130,7 @@ def main() -> None:
     parser.add_argument('add', 'Add new files to track list', action='append')
     parser.add_argument('commit', 'Commit files', action='append')
 
+    parser.add_flag('-a', 'Select all files to tracking', action='store_true')
     parser.add_flag('-am', 'Commit all changed files add insert a message')
     parser.add_flag('-m', 'A short message to commit')
 
@@ -130,8 +138,11 @@ def main() -> None:
 
     if args.init:
         _init()
-    elif args.add:
-        _add(args.add)
+    elif args.add is not None:
+        if args.a:
+            _add('*')
+        else:
+            _add(args.add)
     elif args.status:
         _status()
     elif args.log:
