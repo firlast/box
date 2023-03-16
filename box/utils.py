@@ -33,3 +33,19 @@ def generate_id(*complements: str) -> str:
         *complements
     ))
     return hashlib.sha1(id_parts.encode()).hexdigest()
+
+
+def divide_list(parts: int, iterable: list) -> list:
+    if parts > 1:
+        q, r = divmod(len(iterable), parts)
+        split_list = []
+        stop = 0
+
+        for i in range(1, parts + 1):
+            start = stop
+            stop += q + 1 if i <= r else q
+            split_list.append(iterable[start:stop])
+
+        return split_list
+    else:
+        raise ValueError('"parts" must be at least 1')
