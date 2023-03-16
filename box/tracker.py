@@ -86,6 +86,15 @@ class Tracker:
 
         for filepath in files_list:
             file_hash = self.get_file_hash(filepath)
-            tracked[filepath] = dict(hash=file_hash, committed=False)
+
+            try:
+                with open(filepath, 'r') as _test_file:
+                    _test_file.read()
+            except UnicodeDecodeError:
+                binary = True
+            else:
+                binary = False
+
+            tracked[filepath] = dict(hash=file_hash, committed=False, binary=binary)
 
         self._dump_tracker(tracked)
