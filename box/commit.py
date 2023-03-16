@@ -29,6 +29,12 @@ class Commit:
         with open(object_path, 'w') as _object:
             json.dump(file_diff, _object, separators=(',', ':'))
 
+    def _create_object_to_binary(self, file_content: bytes, obj_id: str) -> None:
+        object_path = os.path.join(self._obj_file, obj_id)
+
+        with open(object_path, 'wb') as _object:
+            _object.write(file_content)
+
     def _get_object(self, object_id: str) -> dict:
         object_path = os.path.join(self._obj_file, object_id)
         with open(object_path, 'rb') as file:
@@ -75,28 +81,37 @@ class Commit:
         commit_objects = {}
 
         for file in files:
-            with open(file, 'r') as file_r:
-                file_lines = utils.enumerate_lines(file_r.readlines())
-
-            if not tracked[file]['committed']:
-                self._tracker.update_track_info(file, committed=True)
-            elif self._tracker.get_tracked_file(file)['hash'] != self._tracker.get_file_hash(file):
-                file_commits = self._get_file_commits(file)
-                file_objects = [commit['objects'][file] for commit in file_commits.values()]
-                merged_lines = {}
-
-                for obj_id in file_objects:
-                    merged_lines.update(self._get_object(obj_id))
-
-                self._tracker.update_track_info(file, committed=True, update_hash=True)
-                file_lines = utils.difference_lines(merged_lines, file_lines)
-            else:
-                # ignore files without changes
-                continue
-
+            file_info = tracked[file]
             obj_id = utils.generate_id(commit_id, file)
             commit_objects[file] = obj_id
-            self._create_object(file_lines, obj_id)
+
+            if not file_info['binary']:
+                with open(file, 'r') as file_r:
+                    file_lines = utils.enumerate_lines(file_r.readlines())
+
+                if not file_info['committed']:
+                    self._tracker.update_track_info(file, committed=True)
+                elif self._tracker.get_tracked_file(file)['hash'] != self._tracker.get_file_hash(file):
+                    file_commits = self._get_file_commits(file)
+                    file_objects = [commit['objects'][file] for commit in file_commits.values()]
+                    merged_lines = {}
+
+                    for obj_id in file_objects:
+                        merged_lines.update(self._get_object(obj_id))
+
+                    self._tracker.update_track_info(file, committed=True, update_hash=True)
+                    file_lines = utils.difference_lines(merged_lines, file_lines)
+                else:
+                    # ignore files without changes
+                    continue
+
+                self._create_object(file_lines, obj_id)
+            else:
+                with open(file, 'rb') as file_r:
+                    file_content = file_r.read()
+
+                self._tracker.update_track_info(file, committed=True, update_hash=True)
+                self._create_object_to_binary(file_content, obj_id)
 
         return commit_objects
 
