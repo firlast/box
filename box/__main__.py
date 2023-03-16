@@ -134,10 +134,10 @@ def main() -> None:
         _add(args.add)
     elif args.status:
         _status()
+    elif args.log:
+        _log()
     elif args.commit is not None:
         if args.am:
             _commit('*', args.am)
         else:
             _commit(args.commit, args.m)
-    elif args.log:
-        _log()
