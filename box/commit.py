@@ -70,32 +70,9 @@ class Commit:
 
         return commits
 
-    def commit(self, files: List[str], message: str) -> str:
-        """
-        Commit files with a message.
-
-        If is the first file commit, this method enumerate
-        all file lines and store this in an "object", the
-        object ID is stored in commit data. Otherwise, this method
-        gets the difference of all merged file commits from
-        enumerate file lines and store this difference.
-
-        :param files: Files to commit
-        :param message: A message to describe this change
-        :return: Commit ID
-        """
-
+    def _create_commit_objects(self, files: list, commit_id: str) -> dict:
         tracked = self._tracker.get_tracked()
-        commits = self.get_commits()
-
-        # check if all files are tracked
-        for file in files:
-            if file not in tracked:
-                raise exceptions.FileNotTrackedError(f'File "{file}" not tracked')
-
         commit_objects = {}
-        commit_datetime = str(datetime.now().replace(microsecond=0))
-        commit_id = utils.generate_id(commit_datetime, message)
 
         for file in files:
             with open(file, 'r') as file_r:
@@ -120,6 +97,35 @@ class Commit:
             obj_id = utils.generate_id(commit_id, file)
             commit_objects[file] = obj_id
             self._create_object(file_lines, obj_id)
+
+        return commit_objects
+
+    def commit(self, files: List[str], message: str) -> str:
+        """
+        Commit files with a message.
+
+        If is the first file commit, this method enumerate
+        all file lines and store this in an "object", the
+        object ID is stored in commit data. Otherwise, this method
+        gets the difference of all merged file commits from
+        enumerate file lines and store this difference.
+
+        :param files: Files to commit
+        :param message: A message to describe this change
+        :return: Commit ID
+        """
+
+        tracked = self._tracker.get_tracked()
+        commits = self.get_commits()
+
+        # check if all files are tracked
+        for file in files:
+            if file not in tracked:
+                raise exceptions.FileNotTrackedError(f'File "{file}" not tracked')
+
+        commit_datetime = str(datetime.now().replace(microsecond=0))
+        commit_id = utils.generate_id(commit_datetime, message)
+        commit_objects = self._create_commit_objects(files, commit_id)
 
         if not commit_objects:
             raise exceptions.NoFilesToCommitError('No files to commit')
