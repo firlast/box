@@ -117,7 +117,7 @@ class Commit:
                 # ignore files without changes
                 continue
 
-            obj_id = utils.generate_id(commit_datetime, message, file)
+            obj_id = utils.generate_id(commit_id, file)
             commit_objects[file] = obj_id
             self._create_object(file_lines, obj_id)
 
