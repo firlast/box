@@ -21,7 +21,7 @@ class Tracker:
 
         return _hash.hexdigest()
 
-    def _dump_tracker(self, data: dict) -> None:
+    def dump_tracker(self, data: dict) -> None:
         with open(self._tracker_file, 'w') as tracker:
             json.dump(data, tracker, indent=2)
 
@@ -66,7 +66,7 @@ class Tracker:
             if update_hash:
                 tracked[filepath]['hash'] = self.get_file_hash(filepath)
             tracked[filepath]['committed'] = committed
-            self._dump_tracker(tracked)
+            self.dump_tracker(tracked)
         else:
             raise exceptions.FileNotTrackedError(f'File "{filepath}" not tracked')
 
@@ -85,8 +85,6 @@ class Tracker:
         tracked = self.get_tracked()
 
         for filepath in files_list:
-            file_hash = self.get_file_hash(filepath)
-
             try:
                 with open(filepath, 'r') as _test_file:
                     _test_file.read()
@@ -95,6 +93,7 @@ class Tracker:
             else:
                 binary = False
 
+            file_hash = self.get_file_hash(filepath)
             tracked[filepath] = dict(hash=file_hash, committed=False, binary=binary)
 
-        self._dump_tracker(tracked)
+        self.dump_tracker(tracked)
