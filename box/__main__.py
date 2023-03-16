@@ -112,6 +112,7 @@ def main() -> None:
     parser.add_argument('add', 'Add new files to track list', action='append')
     parser.add_argument('commit', 'Commit files', action='append')
 
+    parser.add_flag('-am', 'Commit all changed files add insert a message')
     parser.add_flag('-m', 'A short message to commit')
 
     args = parser.parse()
@@ -122,5 +123,8 @@ def main() -> None:
         _add(args.add)
     elif args.status:
         _status()
-    elif args.commit:
-        _commit(args.commit, args.m)
+    elif args.commit is not None:
+        if args.am:
+            _commit('*', args.am)
+        else:
+            _commit(args.commit, args.m)
