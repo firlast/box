@@ -87,4 +87,5 @@ class Tracker:
         for filepath in files_list:
             file_hash = self.get_file_hash(filepath)
             tracked[filepath] = dict(hash=file_hash, committed=False)
-            self._dump_tracker(tracked)
+
+        self._dump_tracker(tracked)
