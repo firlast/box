@@ -8,6 +8,7 @@ from .__init__ import __version__
 from .tracker import Tracker
 from .commit import Commit
 from .ignore import get_non_ignored
+from . import exceptions
 
 REPO_PATH = '.box'
 OBJECTS_PATH = os.path.join(REPO_PATH, 'objects')
@@ -91,24 +92,27 @@ def _commit(files: Union[list, str], message: str) -> None:
     tracked = tracker.get_tracked()
     uncommitted = _get_uncommitted_files(tracked)
 
-    if files == "*":
-        commit_id = commit.commit(uncommitted, message)
-        files = uncommitted
-    else:
-        for file in files:
-            if not os.path.isfile(file):
-                print(f'\033[1;31mFile {repr(file)} not tracked for commit\033[m')
-                print('\033[33mUse "add" argument to track this file\033[m')
-                sys.exit(1)
-            elif file not in tracked:
-                print(f'\033[1;31mFile {repr(file)} not tracked for commit\033[m')
-                print('\033[33mUse "add" argument to track this file\033[m')
-                sys.exit(1)
+    try:
+        if files == "*":
+            commit_id = commit.commit(uncommitted, message)
+            files = uncommitted
+        else:
+            for file in files:
+                if not os.path.isfile(file):
+                    print(f'\033[1;31mFile {repr(file)} dont\'t exists\033[m')
+                    sys.exit(1)
+                elif file not in tracked:
+                    print(f'\033[1;31mFile {repr(file)} not tracked for commit\033[m')
+                    print('\033[33mUse "add" argument to track this file\033[m')
+                    sys.exit(1)
 
-        commit_id = commit.commit(uncommitted, message)
+            commit_id = commit.commit(uncommitted, message)
 
-    print(f'Commit #\033[4m{commit_id[:7]}\033[m "{message}"')
-    print(f'\033[33m{len(files)} files committed\033[m')
+        print(f'Commit #\033[4m{commit_id[:7]}\033[m "{message}"')
+        print(f'\033[33m{len(files)} files committed\033[m')
+    except exceptions.NoFilesToCommitError:
+        print('\033[1;31mNo files changed to commit\033[m')
+        print('\033[33mYou can only commit changed and tracked files\033[m')
 
 
 def _log() -> None:
