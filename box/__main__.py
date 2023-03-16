@@ -57,25 +57,29 @@ def _status() -> None:
     uncommitted = _get_uncommitted_files(tracked_files)
     untracked = _get_untracked_files(non_ignored, tracked_files)
 
-    print('\033[1mUncommitted files\033[m')
+    if uncommitted or untracked:
+        print('\033[1mUncommitted files\033[m')
 
-    if uncommitted:
-        print(f'Use "commit" argument to commit {len(uncommitted)} files:\033[33m')
-        for file in uncommitted:
-            print('   ' + file)
+        if uncommitted:
+            print(f'Use "commit" argument to commit {len(uncommitted)} files:\033[33m')
+            for file in uncommitted:
+                print('   ' + file)
+        else:
+            print('0 files found for commit')
+
+        print('\n\033[37;1mUntracked files\033[m')
+
+        if untracked:
+            print(f'Use "add" argument to track {len(untracked)} files:\033[33m')
+            for file in untracked:
+                print('   ' + file)
+        else:
+            print('0 files found for tracking')
+
+        print('\033[m')
     else:
-        print('0 files found for commit')
-
-    print('\n\033[37;1mUntracked files\033[m')
-
-    if untracked:
-        print(f'Use "add" argument to track {len(untracked)} files:\033[33m')
-        for file in untracked:
-            print('   ' + file)
-    else:
-        print('0 files found for tracking')
-
-    print('\033[m')
+        print('\033[1mDirectory without new files or changes!\033[m')
+        print('\033[33m0 files found for track or commit\033[m')
 
 
 def _commit(files: Union[list, str], message: str) -> None:
