@@ -82,7 +82,7 @@ def _commit(files: Union[list, str], message: str) -> None:
 
     if files == "*":
         commit_id = commit.commit(uncommitted, message)
-        files = tracked.keys()
+        files = uncommitted
     else:
         for file in files:
             if not os.path.isfile(file):
