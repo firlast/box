@@ -121,6 +121,9 @@ class Commit:
             commit_objects[file] = obj_id
             self._create_object(file_lines, obj_id)
 
+        if not commit_objects:
+            raise exceptions.NoFilesToCommitError('No files to commit')
+
         commits[commit_id] = dict(
             message=message,
             date=str(commit_datetime),
