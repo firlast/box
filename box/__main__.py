@@ -100,6 +100,16 @@ def _commit(files: Union[list, str], message: str) -> None:
     print(f'\033[33m{len(files)} files committed\033[m')
 
 
+def _log() -> None:
+    commits = commit.get_commits()
+
+    for cid, cdata in reversed(commits.items()):
+        message = cdata['message']
+        date = cdata['date']
+        files = len(cdata['objects'])
+        print(f'{files} files committed in \033[34;4m{cid[:7]}\033[m: ({date}) \033[33m{repr(message)}\033[m')
+
+
 def main() -> None:
     parser = ArgEasy(
         name='Box',
@@ -109,6 +119,7 @@ def main() -> None:
 
     parser.add_argument('init', 'Init a empty repository', action='store_true')
     parser.add_argument('status', 'View uncommitted and untracked files', action='store_true')
+    parser.add_argument('log', 'View commits log', action='store_true')
     parser.add_argument('add', 'Add new files to track list', action='append')
     parser.add_argument('commit', 'Commit files', action='append')
 
@@ -128,3 +139,5 @@ def main() -> None:
             _commit('*', args.am)
         else:
             _commit(args.commit, args.m)
+    elif args.log:
+        _log()
