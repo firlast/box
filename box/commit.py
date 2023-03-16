@@ -96,8 +96,8 @@ class Commit:
                     file_objects = [commit['objects'][file] for commit in file_commits.values()]
                     merged_lines = {}
 
-                    for obj_id in file_objects:
-                        merged_lines.update(self._get_object(obj_id))
+                    for file_obj_id in file_objects:
+                        merged_lines.update(self._get_object(file_obj_id))
 
                     self._tracker.update_track_info(file, committed=True, update_hash=True)
                     file_lines = utils.difference_lines(merged_lines, file_lines)
