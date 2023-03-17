@@ -98,11 +98,11 @@ class Commit:
                     tracked[file]['committed'] = True
                 elif file_info['hash'] != self._tracker.get_file_hash(file):
                     file_commits = self._get_file_commits(file)
-                    file_objects = [commit['objects'][file] for commit in file_commits.values()]
+                    file_objects = [self._get_object(commit['objects'][file]) for commit in file_commits.values()]
                     merged_lines = {}
 
-                    for file_obj_id in file_objects:
-                        merged_lines.update(self._get_object(file_obj_id))
+                    for file_obj in file_objects:
+                        merged_lines.update(file_obj)
 
                     tracked[file]['hash'] = self._tracker.get_file_hash(file)
                     file_lines = utils.difference_lines(merged_lines, file_lines)
