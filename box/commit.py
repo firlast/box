@@ -90,7 +90,7 @@ class Commit:
                     file_lines = utils.enumerate_lines(file_r.readlines())
 
                 if not file_info['committed']:
-                    self._tracker.update_track_info(file, committed=True)
+                    tracked[file]['committed'] = True
                 elif self._tracker.get_tracked_file(file)['hash'] != self._tracker.get_file_hash(file):
                     file_commits = self._get_file_commits(file)
                     file_objects = [commit['objects'][file] for commit in file_commits.values()]
@@ -99,7 +99,7 @@ class Commit:
                     for file_obj_id in file_objects:
                         merged_lines.update(self._get_object(file_obj_id))
 
-                    self._tracker.update_track_info(file, committed=True, update_hash=True)
+                    tracked[file]['hash'] = self._tracker.get_file_hash(file)
                     file_lines = utils.difference_lines(merged_lines, file_lines)
                 else:
                     # ignore files without changes
@@ -110,9 +110,10 @@ class Commit:
                 with open(file, 'rb') as file_r:
                     file_content = file_r.read()
 
-                self._tracker.update_track_info(file, committed=True, update_hash=True)
+                tracked[file]['hash'] = self._tracker.get_file_hash(file)
                 self._create_object_to_binary(file_content, obj_id)
 
+        self._tracker.dump_tracker(tracked)
         return commit_objects
 
     def commit(self, files: List[str], message: str) -> str:
