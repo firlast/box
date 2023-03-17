@@ -80,6 +80,11 @@ class Commit:
         tracked = self._tracker.get_tracked()
         commit_objects = {}
 
+        # check if all files are tracked
+        for file in files:
+            if file not in tracked:
+                raise exceptions.FileNotTrackedError(f'File "{file}" not tracked')
+
         for file in files:
             file_info = tracked[file]
             obj_id = utils.generate_id(commit_id, file)
@@ -131,13 +136,7 @@ class Commit:
         :return: Commit ID
         """
 
-        tracked = self._tracker.get_tracked()
         commits = self.get_commits()
-
-        # check if all files are tracked
-        for file in files:
-            if file not in tracked:
-                raise exceptions.FileNotTrackedError(f'File "{file}" not tracked')
 
         commit_datetime = str(datetime.now().replace(microsecond=0))
         commit_id = utils.generate_id(commit_datetime, message)
