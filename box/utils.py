@@ -1,5 +1,5 @@
-import hashlib
-import secrets
+from hashlib import sha1
+from secrets import token_hex
 
 
 def enumerate_lines(file_lines: list) -> dict:
@@ -29,10 +29,10 @@ def difference_lines(older_enum_lines: dict, new_enum_lines: dict) -> dict:
 
 def generate_id(*complements: str) -> str:
     id_parts = ''.join((
-        secrets.token_hex(16),
+        token_hex(16),
         *complements
     ))
-    return hashlib.sha1(id_parts.encode()).hexdigest()
+    return sha1(id_parts.encode()).hexdigest()
 
 
 def divide_list(parts: int, iterable: list) -> list:

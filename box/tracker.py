@@ -1,6 +1,6 @@
-import os
-import hashlib
 import json
+from os import path
+from hashlib import md5
 
 from . import exceptions
 
@@ -12,12 +12,12 @@ class Tracker:
         :param repo_path: Repository path
         """
 
-        self._tracker_file = os.path.join(repo_path, 'tracker.json')
+        self._tracker_file = path.join(repo_path, 'tracker.json')
 
     @staticmethod
     def get_file_hash(filepath: str) -> str:
         with open(filepath, 'rb') as file:
-            _hash = hashlib.md5(file.read())
+            _hash = md5(file.read())
 
         return _hash.hexdigest()
 

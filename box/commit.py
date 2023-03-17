@@ -1,5 +1,5 @@
-import os
 import json
+from os import path
 from typing import List
 from datetime import datetime
 
@@ -15,8 +15,8 @@ class Commit:
         :param repo_path: Repository path
         """
 
-        self._commit_file = os.path.join(repo_path, 'commits.json')
-        self._obj_file = os.path.join(repo_path, 'objects')
+        self._commit_file = path.join(repo_path, 'commits.json')
+        self._obj_file = path.join(repo_path, 'objects')
         self._tracker = Tracker(repo_path)
 
     def _dump_commit_file(self, data: dict) -> None:
@@ -24,19 +24,19 @@ class Commit:
             json.dump(data, file, indent=2)
 
     def _create_object(self, file_diff: dict, obj_id: str) -> None:
-        object_path = os.path.join(self._obj_file, obj_id)
+        object_path = path.join(self._obj_file, obj_id)
 
         with open(object_path, 'w') as _object:
             json.dump(file_diff, _object, separators=(',', ':'))
 
     def _create_object_to_binary(self, file_content: bytes, obj_id: str) -> None:
-        object_path = os.path.join(self._obj_file, obj_id)
+        object_path = path.join(self._obj_file, obj_id)
 
         with open(object_path, 'wb') as _object:
             _object.write(file_content)
 
     def _get_object(self, object_id: str) -> dict:
-        object_path = os.path.join(self._obj_file, object_id)
+        object_path = path.join(self._obj_file, object_id)
         with open(object_path, 'rb') as file:
             object_data = json.load(file)
 

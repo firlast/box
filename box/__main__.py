@@ -1,5 +1,5 @@
-import os
 import sys
+from os import path, mkdir
 from typing import Union
 
 from argeasy import ArgEasy
@@ -11,7 +11,7 @@ from .ignore import get_non_ignored
 from . import exceptions
 
 REPO_PATH = '.box'
-OBJECTS_PATH = os.path.join(REPO_PATH, 'objects')
+OBJECTS_PATH = path.join(REPO_PATH, 'objects')
 
 tracker = Tracker(REPO_PATH)
 commit = Commit(REPO_PATH)
@@ -26,12 +26,12 @@ def _get_untracked_files(non_ignored: list, tracked: dict) -> list:
 
 
 def _init() -> None:
-    if os.path.isdir(REPO_PATH):
+    if path.isdir(REPO_PATH):
         print(f'\033[33mRepository already started in {repr(REPO_PATH)}\033[m')
         sys.exit(1)
     else:
-        os.mkdir(REPO_PATH)
-        os.mkdir(OBJECTS_PATH)
+        mkdir(REPO_PATH)
+        mkdir(OBJECTS_PATH)
         print(f'\033[32mNew repository started in {repr(REPO_PATH)}\033[m')
 
 
@@ -44,7 +44,7 @@ def _add(files: Union[list, str]) -> None:
         files = untracked
 
     for file in files:
-        if not os.path.isfile(file):
+        if not path.isfile(file):
             print(f'\033[31mFile {repr(file)} not exists in current directory\033[m')
             sys.exit(1)
 
@@ -98,7 +98,7 @@ def _commit(files: Union[list, str], message: str) -> None:
             files = uncommitted
         else:
             for file in files:
-                if not os.path.isfile(file):
+                if not path.isfile(file):
                     print(f'\033[1;31mFile {repr(file)} dont\'t exists\033[m')
                     sys.exit(1)
                 elif file not in tracked:

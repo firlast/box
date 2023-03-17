@@ -1,16 +1,16 @@
-import os
+from os import path as os_path, walk as os_walk
 
 
 def _filter_filelist(path: str) -> str:
     if path.startswith('/'):
         path = path[1:]
 
-    return os.path.abspath(path)
+    return os_path.abspath(path)
 
 
 def _path_has_ignored(ignored: list, path: str) -> bool:
     for i in ignored:
-        if i in os.path.abspath(path):
+        if i in os_path.abspath(path):
             return True
 
 
@@ -32,10 +32,10 @@ def get_non_ignored() -> list:
     ignored = _load_ignore()
     non_ignored = []
 
-    for root, dirs, files in os.walk('.'):
+    for root, dirs, files in os_walk('.'):
         if not _path_has_ignored(ignored, root):
             for file in files:
-                filepath = os.path.join(root, file)
+                filepath = os_path.join(root, file)
                 if not _path_has_ignored(ignored, filepath):
                     non_ignored.append(filepath.replace('./', ''))
 
