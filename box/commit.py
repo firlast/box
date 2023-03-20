@@ -93,6 +93,16 @@ class Commit:
 
         return commits
 
+    def merge_objects(self, file: str) -> dict:
+        file_commits = self._get_file_commits(file)
+        file_objects = [self._get_object(commit['objects'][file]) for commit in file_commits.values()]
+        merged = {}
+
+        for file_obj in file_objects:
+            merged.update(file_obj)
+
+        return merged
+
     def _create_commit_objects(self, files: list, commit_id: str) -> dict:
         tracked = self._tracker.get_tracked()
         commit_objects = {}
@@ -114,15 +124,9 @@ class Commit:
                 if not file_info['committed']:
                     tracked[file]['committed'] = True
                 elif file_info['hash'] != self._tracker.get_file_hash(file):
-                    file_commits = self._get_file_commits(file)
-                    file_objects = [self._get_object(commit['objects'][file]) for commit in file_commits.values()]
-                    merged_lines = {}
-
-                    for file_obj in file_objects:
-                        merged_lines.update(file_obj)
-
+                    merged = self.merge_objects(file)
                     tracked[file]['hash'] = self._tracker.get_file_hash(file)
-                    file_lines = utils.difference_lines(merged_lines, file_lines)
+                    file_lines = utils.difference_lines(merged, file_lines)
                 else:
                     # ignore files without changes
                     continue
