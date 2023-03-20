@@ -36,6 +36,8 @@ class Commit:
         self._obj_file = path.join(repo_path, 'objects')
         self._tracker = Tracker(repo_path)
 
+        self._commits = self._get_commits()
+
     def _dump_commit_file(self, data: dict) -> None:
         with open(self._commit_file, 'w') as file:
             json.dump(data, file, indent=2)
@@ -64,6 +66,15 @@ class Commit:
         file_commits = {cid: cdata for cid, cdata in commits.items() if filename in cdata['objects']}
         return file_commits
 
+    def _get_commits(self) -> dict:
+        try:
+            with open(self._commit_file, 'rb') as file:
+                commits = json.load(file)
+        except FileNotFoundError:
+            commits = {}
+
+        return commits
+
     def get_commits(self, until_commit_id: str = None) -> dict:
         """
         Get all commits in `dict` format. The commit
@@ -74,15 +85,9 @@ class Commit:
         :return: Commits
         """
 
-        try:
-            with open(self._commit_file, 'rb') as file:
-                commits = json.load(file)
-        except FileNotFoundError:
-            commits = {}
-
         if until_commit_id:
             filtered_commits = {}
-            for cid, cdata in commits.items():
+            for cid, cdata in self._commits.items():
                 if cid != until_commit_id:
                     filtered_commits[cid] = cdata
                 else:
@@ -91,7 +96,7 @@ class Commit:
 
             return filtered_commits
 
-        return commits
+        return self._commits
 
     def merge_objects(self, file: str) -> dict:
         file_commits = self._get_file_commits(file)
@@ -172,5 +177,6 @@ class Commit:
             objects=commit_objects,
         )
 
+        self._commits = commits
         self._dump_commit_file(commits)
         return commit_id
