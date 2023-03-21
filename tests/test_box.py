@@ -1,7 +1,7 @@
 import os
 import sys
 import shutil
-import json
+import marshal
 
 import bupytest
 
@@ -165,11 +165,11 @@ class TestCommit(bupytest.UnitTest):
             message=f'Object to {repr(TEST_FILE_2)} not created'
         )
 
-        with open(file_1_object_path, 'r') as object_file:
-            file_1_object_lines = json.load(object_file)
+        with open(file_1_object_path, 'rb') as object_file:
+            file_1_object_lines = marshal.load(object_file)
 
-        with open(file_2_object_path, 'r') as object_file:
-            file_2_object_lines = json.load(object_file)
+        with open(file_2_object_path, 'rb') as object_file:
+            file_2_object_lines = marshal.load(object_file)
 
         self.assert_expected(
             value=file_1_object_lines,
