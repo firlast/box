@@ -123,11 +123,14 @@ class Commit:
             file_info = tracked[file]
 
             if file_info['binary']:
-                with open(file, 'rb') as file_r:
-                    file_content = file_r.read()
+                current_hash = self._tracker.get_file_hash(file)
 
-                tracked[file]['hash'] = self._tracker.get_file_hash(file)
-                self._create_object_to_binary(file_content, obj_id)
+                if tracked[file]['hash'] != current_hash:
+                    with open(file, 'rb') as file_r:
+                        file_content = file_r.read()
+
+                    tracked[file]['hash'] = current_hash
+                    self._create_object_to_binary(file_content, obj_id)
             else:
                 with open(file, 'r') as file_r:
                     file_lines = utils.enumerate_lines(file_r.readlines())
