@@ -124,12 +124,15 @@ class Commit:
 
             if file_info['binary']:
                 current_hash = self._tracker.get_file_hash(file)
+                tracked[file]['hash'] = current_hash
+                with open(file, 'rb') as file_r:
+                    file_content = file_r.read()
 
-                if tracked[file]['hash'] != current_hash:
-                    with open(file, 'rb') as file_r:
-                        file_content = file_r.read()
-
-                    tracked[file]['hash'] = current_hash
+                if file_info['committed']:
+                    if tracked[file]['hash'] != current_hash:
+                        self._create_object_to_binary(file_content, obj_id)
+                else:
+                    tracked[file]['committed'] = True
                     self._create_object_to_binary(file_content, obj_id)
             else:
                 with open(file, 'r') as file_r:
