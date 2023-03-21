@@ -16,6 +16,7 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 import sys
+import time
 from os import path, mkdir
 from typing import Union
 
@@ -110,6 +111,7 @@ def _commit(files: Union[list, str], message: str) -> None:
 
     try:
         if files == "*":
+            time_s = time.time()
             commit_id = commit.commit(uncommitted, message)
             files = uncommitted
         else:
@@ -122,10 +124,11 @@ def _commit(files: Union[list, str], message: str) -> None:
                     print('\033[33mUse "add" argument to track this file\033[m')
                     sys.exit(1)
 
+            time_s = time.time()
             commit_id = commit.commit(uncommitted, message)
 
         print(f'Commit #\033[4m{commit_id[:7]}\033[m "{message}"')
-        print(f'\033[33m{len(files)} files committed\033[m')
+        print(f'\033[33m{len(files)} files committed in {time.time() - time_s:.3f}s\033[m')
     except exceptions.NoFilesToCommitError:
         print('\033[1;31mNo files changed to commit\033[m')
         print('\033[33mYou can only commit changed and tracked files\033[m')
