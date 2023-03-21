@@ -54,12 +54,10 @@ def _init() -> None:
 
 
 def _add(files: Union[list, str]) -> None:
-    non_ignored = get_non_ignored()
-    tracked = tracker.get_tracked()
-    untracked = _get_untracked_files(non_ignored, tracked)
-
     if files == "*":
-        files = untracked
+        non_ignored = get_non_ignored()
+        tracked = tracker.get_tracked()
+        files = _get_untracked_files(non_ignored, tracked)
 
     for file in files:
         if not path.isfile(file):
