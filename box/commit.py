@@ -16,6 +16,7 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
 import json
+import marshal
 from os import path
 from typing import List
 from datetime import datetime
@@ -45,8 +46,8 @@ class Commit:
     def _create_object(self, file_diff: dict, obj_id: str) -> None:
         object_path = path.join(self._obj_file, obj_id)
 
-        with open(object_path, 'w') as _object:
-            json.dump(file_diff, _object, separators=(',', ':'))
+        with open(object_path, 'wb') as _object:
+            marshal.dump(file_diff, _object)
 
     def _create_object_to_binary(self, file_content: bytes, obj_id: str) -> None:
         object_path = path.join(self._obj_file, obj_id)
@@ -57,7 +58,7 @@ class Commit:
     def _get_object(self, object_id: str) -> dict:
         object_path = path.join(self._obj_file, object_id)
         with open(object_path, 'rb') as file:
-            object_data = json.load(file)
+            object_data = marshal.load(file)
 
         return object_data
 
