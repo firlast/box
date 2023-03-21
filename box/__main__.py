@@ -26,6 +26,7 @@ from .tracker import Tracker
 from .commit import Commit
 from .ignore import get_non_ignored
 from . import exceptions
+from . import utils
 
 REPO_PATH = '.box'
 OBJECTS_PATH = path.join(REPO_PATH, 'objects')
@@ -142,6 +143,34 @@ def _log() -> None:
         print(f'{files} files committed in \033[34;4m{cid[:7]}\033[m: ({date}) \033[33m{repr(message)}\033[m')
 
 
+def _diff() -> None:
+    tracked = tracker.get_tracked()
+
+    for file, info in tracked.items():
+        if not info['binary']:
+            with open(file, 'r') as reader:
+                content = reader.readlines()
+
+            merged = commit.merge_objects(file)
+            current_lines = utils.enumerate_lines(content)
+            diff = utils.difference_lines(merged, current_lines)
+            
+            if diff:
+                print(f'\033[1mfile {repr(file)} diff\033[m')
+                print(f'\033[33m{len(diff)} lines changed\n\033[m')
+
+                for number, line in diff.items():
+                    if line is None:
+                        print(f'    \033[31m{number} | -- {merged[number]}\033[m')
+                    else:
+                        print(f'    \033[32m{number} | ++ {line}\033[m')
+
+                print()
+        else:
+            print('\033[1;31mCannot get difference of binary files\033[m')
+            sys.exit(1)
+
+
 def main() -> None:
     parser = ArgEasy(
         name='Box',
@@ -152,6 +181,7 @@ def main() -> None:
     parser.add_argument('init', 'Init a empty repository', action='store_true')
     parser.add_argument('status', 'View uncommitted and untracked files', action='store_true')
     parser.add_argument('log', 'View commits log', action='store_true')
+    parser.add_argument('diff', 'Get difference of files', action='store_true')
     parser.add_argument('add', 'Add new files to track list', action='append')
     parser.add_argument('commit', 'Commit files', action='append')
 
@@ -177,3 +207,5 @@ def main() -> None:
             _commit('*', args.am)
         else:
             _commit(args.commit, args.m)
+    elif args.diff:
+        _diff()
