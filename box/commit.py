@@ -17,6 +17,7 @@
 
 import json
 import marshal
+from hashlib import md5
 from os import path
 from typing import List
 from datetime import datetime
@@ -75,6 +76,20 @@ class Commit:
             commits = {}
 
         return commits
+
+    def _get_last_commit_hash(self) -> str:
+        commits = self.get_commits()
+
+        if commits:
+            commit_id = list(commits.keys())[-1]
+            last_commit: dict = commits[commit_id]
+            last_commit.pop('objects')
+            commit_info = '.'.join(last_commit.values())
+            _hash = md5(commit_info.encode()).hexdigest()
+        else:
+            _hash = ''
+
+        return _hash
 
     def get_commits(self, until_commit_id: str = None) -> dict:
         """
