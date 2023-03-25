@@ -84,17 +84,23 @@ class Commit:
 
         return commits
 
+    def _get_commit_hash(self, commit_id: str) -> bytes:
+        commits = self.get_commits()
+        commit: dict = commits[commit_id].copy()
+
+        objects_hashes = [self._get_object_hash(obj) for obj in commit.pop('objects').values()]
+        objects_sum_hash = md5(b''.join(objects_hashes)).hexdigest()
+        commit_info = '.'.join([objects_sum_hash, *commit.values()])
+        _hash = md5(commit_info.encode()).hexdigest()
+
+        return _hash
+
     def _get_last_commit_hash(self) -> str:
         commits = self.get_commits()
 
         if commits:
             commit_id = list(commits.keys())[-1]
-            last_commit: dict = commits[commit_id].copy()
-            objects_hashes = [self._get_object_hash(obj) for obj in last_commit['objects'].values()]
-            objects_sum_hash = md5(b''.join(objects_hashes)).hexdigest()
-            last_commit.pop('objects')
-            commit_info = '.'.join([objects_sum_hash, *last_commit.values()])
-            _hash = md5(commit_info.encode()).hexdigest()
+            _hash = self._get_commit_hash(commit_id)
         else:
             _hash = ''
 
