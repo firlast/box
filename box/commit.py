@@ -90,7 +90,7 @@ class Commit:
 
         objects_hashes = [self._get_object_hash(obj) for obj in commit.pop('objects').values()]
         objects_sum_hash = md5(b''.join(objects_hashes)).hexdigest()
-        commit_info = '.'.join([objects_sum_hash, *commit.values()])
+        commit_info = '.'.join([commit_id, objects_sum_hash, *commit.values()])
         _hash = md5(commit_info.encode()).hexdigest()
 
         return _hash
