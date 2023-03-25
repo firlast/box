@@ -63,6 +63,13 @@ class Commit:
 
         return object_data
 
+    def _get_object_hash(self, object_id: str) -> bytes:
+        object_path = path.join(self._obj_file, object_id)
+        with open(object_path, 'rb') as file:
+            _hash = md5(file.read())
+
+        return _hash.digest()
+
     def _get_file_commits(self, filename: str) -> dict:
         commits = self.get_commits()
         file_commits = {cid: cdata for cid, cdata in commits.items() if filename in cdata['objects']}
@@ -83,8 +90,10 @@ class Commit:
         if commits:
             commit_id = list(commits.keys())[-1]
             last_commit: dict = commits[commit_id]
+            objects_hashes = [self._get_object_hash(obj) for obj in last_commit['objects'].values()]
+            objects_sum_hash = md5(b''.join(objects_hashes)).hexdigest()
             last_commit.pop('objects')
-            commit_info = '.'.join(last_commit.values())
+            commit_info = '.'.join([objects_sum_hash, *last_commit.values()])
             _hash = md5(commit_info.encode()).hexdigest()
         else:
             _hash = ''
