@@ -89,7 +89,7 @@ class Commit:
 
         if commits:
             commit_id = list(commits.keys())[-1]
-            last_commit: dict = commits[commit_id]
+            last_commit: dict = commits[commit_id].copy()
             objects_hashes = [self._get_object_hash(obj) for obj in last_commit['objects'].values()]
             objects_sum_hash = md5(b''.join(objects_hashes)).hexdigest()
             last_commit.pop('objects')
