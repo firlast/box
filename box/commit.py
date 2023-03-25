@@ -197,6 +197,7 @@ class Commit:
             message=message,
             date=str(commit_datetime),
             objects=commit_objects,
+            phash=self._get_last_commit_hash()
         )
 
         self._commits = commits
