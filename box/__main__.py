@@ -182,6 +182,11 @@ def _integrity():
 
 
 def main() -> None:
+    if not path.isfile(OBJECTS_PATH):
+        print('\033[1;31mRepository not found\033[m')
+        print('\033[33mCreate a repository with "init" command\033[m')
+        sys.exit(1)
+
     parser = ArgEasy(
         name='Box',
         description='Quick and simple file versioning with Box.',
