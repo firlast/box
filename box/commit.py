@@ -220,6 +220,15 @@ class Commit:
         return commit_id
 
     def check_integrity(self) -> bool:
+        """Check commits integrity.
+
+        If any commit is altered by a third party, `False` is
+        returned, indicating that the commit chain is invalid.
+
+        :return: If chain is valid
+        :rtype: bool
+        """
+
         commits = self.get_commits()
         last_hash = ''
 
