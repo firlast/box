@@ -172,6 +172,15 @@ def _diff() -> None:
             sys.exit(1)
 
 
+def _integrity():
+    if commit.check_integrity():
+        print('\033[1;32mCommits without external changes\033[m')
+        print(f'\033[33m{len(commit.get_commits())} commits checked\033[m')
+    else:
+        print('\033[1;31mSome commits were changed inappropriately\033[m')
+        print(f'\033[33m{len(commit.get_commits())} files checked\033[m')
+
+
 def main() -> None:
     parser = ArgEasy(
         name='Box',
@@ -183,6 +192,7 @@ def main() -> None:
     parser.add_argument('status', 'View uncommitted and untracked files', action='store_true')
     parser.add_argument('log', 'View commits log', action='store_true')
     parser.add_argument('diff', 'Get difference of files', action='store_true')
+    parser.add_argument('integrity', 'Check commits integrity', action='store_true')
     parser.add_argument('add', 'Add new files to track list', action='append')
     parser.add_argument('commit', 'Commit files', action='append')
 
@@ -210,3 +220,5 @@ def main() -> None:
             _commit(args.commit, args.m)
     elif args.diff:
         _diff()
+    elif args.integrity:
+        _integrity()
