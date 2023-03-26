@@ -26,6 +26,7 @@ from .__init__ import __version__
 from .tracker import Tracker
 from .commit import Commit
 from .ignore import get_non_ignored
+from . import _config
 from . import exceptions
 from . import utils
 
@@ -101,6 +102,13 @@ def _status() -> None:
 
 
 def _commit(files: Union[list, str], message: str) -> None:
+    author = _config.get_author()
+
+    if not author:
+        print('\033[1;31mPlease set the author\'s name and email before\033[m')
+        print('\033[33mUse "config" command to set author information\033[m')
+        print('Example: \033[4mbox config --name "Name" --email "Email"\033[m')
+
     if not message:
         print('\033[1;31mA short message is required to commit\033[m')
         print('\033[33mUse "-m" flag and insert a message to commit\033[m')
