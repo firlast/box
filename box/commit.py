@@ -218,3 +218,15 @@ class Commit:
         self._commits = commits
         self._dump_commit_file(commits)
         return commit_id
+
+    def check_integrity(self) -> bool:
+        commits = self.get_commits()
+        last_hash = ''
+
+        for commit_id in commits.keys():
+            if commits[commit_id]['phash'] == last_hash:
+                last_hash = self._get_commit_hash(commit_id)
+            else:
+                return False
+        
+        return True
