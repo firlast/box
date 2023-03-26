@@ -125,7 +125,7 @@ def _commit(files: Union[list, str], message: str) -> None:
                     sys.exit(1)
 
             time_s = time.time()
-            commit_id = commit.commit(uncommitted, message)
+            commit_id = commit.commit(files, message)
 
         print(f'Commit #\033[4m{commit_id[:7]}\033[m "{message}"')
         print(f'\033[33m{len(files)} files committed in {time.time() - time_s:.3f}s\033[m')
