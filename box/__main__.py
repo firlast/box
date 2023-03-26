@@ -108,6 +108,7 @@ def _commit(files: Union[list, str], message: str) -> None:
         print('\033[1;31mPlease set the author\'s name and email before\033[m')
         print('\033[33mUse "config" command to set author information\033[m')
         print('Example: \033[4mbox config --name "Name" --email "Email"\033[m')
+        sys.exit(1)
 
     if not message:
         print('\033[1;31mA short message is required to commit\033[m')
