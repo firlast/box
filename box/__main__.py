@@ -103,8 +103,10 @@ def _status() -> None:
 
 def _commit(files: Union[list, str], message: str) -> None:
     author = _config.get_author()
+    author_name = author.get('name')
+    author_email = author.get('email')
 
-    if not author:
+    if not author_name or not author_email:
         print('\033[1;31mPlease set the author\'s name and email before\033[m')
         print('\033[33mUse "config" command to set author information\033[m')
         print('Example: \033[4mbox config --name "Name" --email "Email"\033[m')
