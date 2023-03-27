@@ -116,7 +116,7 @@ class TestCommit(bupytest.UnitTest):
 
     def test_commit(self):
         _tracker.update_track_info(TEST_FILE_1, committed=False)
-        commit_id = _commit.commit([TEST_FILE_1, TEST_FILE_2], message='first commit')
+        commit_id = _commit.commit('author', 'email', [TEST_FILE_1, TEST_FILE_2], message='first commit')
         commits = _commit.get_commits()
 
         self.assert_expected(len(commits), 1, message='Incorrect commits number')
@@ -144,7 +144,7 @@ class TestCommit(bupytest.UnitTest):
         with open(TEST_FILE_2, 'w') as file_2:
             file_2.write(TEST_FILE_2_CONTENT_CHANGED)
 
-        commit_id = _commit.commit([TEST_FILE_1, TEST_FILE_2], message='second commit')
+        commit_id = _commit.commit('author', 'email', [TEST_FILE_1, TEST_FILE_2], message='second commit')
         commits = _commit.get_commits()
 
         self.assert_expected(len(commits), 2, message='Incorrect commits number')
