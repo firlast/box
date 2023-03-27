@@ -202,12 +202,16 @@ def main() -> None:
     parser.add_argument('log', 'View commits log', action='store_true')
     parser.add_argument('diff', 'Get difference of files', action='store_true')
     parser.add_argument('integrity', 'Check commits integrity', action='store_true')
+    parser.add_argument('config', 'Global config', action='store_true')
     parser.add_argument('add', 'Add new files to track list', action='append')
     parser.add_argument('commit', 'Commit files', action='append')
 
     parser.add_flag('-a', 'Select all files to tracking', action='store_true')
     parser.add_flag('-am', 'Commit all changed files add insert a message')
     parser.add_flag('-m', 'A short message to commit')
+
+    parser.add_flag('--name', 'Set author name')
+    parser.add_flag('--email', 'Set author email')
 
     args = parser.parse()
 
@@ -236,3 +240,10 @@ def main() -> None:
         _diff()
     elif args.integrity:
         _integrity()
+    elif args.config:
+        name, email = args.name, args.email
+        if name or email:
+            _config.set_author(name, email)
+        else:
+            print('\033[1;31mName or email is required\033[m')
+            print('\033[33mUse "--name" or "--email" flag\033[m')
