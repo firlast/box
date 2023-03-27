@@ -152,7 +152,10 @@ def _log() -> None:
         message = cdata['message']
         date = cdata['date']
         files = len(cdata['objects'])
-        print(f'{files} files committed in \033[34;4m{cid[:7]}\033[m: ({date}) \033[33m{repr(message)}\033[m')
+        author = cdata['author']
+        author_email = cdata['author_email']
+        print(f'{files} file(s) in \033[34;4m{cid[:7]}\033[m by {author} <{author_email}> '
+              f'({date}) \033[33m{repr(message)}\033[m')
 
 
 def _diff() -> None:
