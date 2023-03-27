@@ -103,7 +103,7 @@ class Tracker:
 
         for filepath in files_list:
             try:
-                with open(filepath, 'r') as _test_file:
+                with open(filepath) as _test_file:
                     _test_file.read()
             except UnicodeDecodeError:
                 binary = True

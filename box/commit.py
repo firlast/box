@@ -77,7 +77,7 @@ class Commit:
 
     def _get_commits(self) -> dict:
         try:
-            with open(self._commit_file, 'rb') as file:
+            with open(self._commit_file) as file:
                 commits = json.load(file)
         except FileNotFoundError:
             commits = {}
