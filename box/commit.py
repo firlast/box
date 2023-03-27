@@ -184,9 +184,8 @@ class Commit:
         self._tracker.dump_tracker(tracked)
         return commit_objects
 
-    def commit(self, files: List[str], message: str) -> str:
-        """
-        Commit files with a message.
+    def commit(self, author: str, author_email: str, files: List[str], message: str) -> str:
+        """Commit files with a message.
 
         If is the first file commit, this method enumerate
         all file lines and store this in an "object", the
@@ -194,9 +193,17 @@ class Commit:
         gets the difference of all merged file commits from
         enumerate file lines and store this difference.
 
+        :param author: Author name
+        :type author: str
+        :param author_email: Author email
+        :type author_email: str
         :param files: Files to commit
-        :param message: A message to describe this change
-        :return: Commit ID
+        :type files: List[str]
+        :param message: Message to describe changes
+        :type message: str
+        :raises exceptions.NoFilesToCommitError: If no file has changed
+        :return: Return commit ID
+        :rtype: str
         """
 
         commits = self.get_commits()
@@ -209,6 +216,8 @@ class Commit:
             raise exceptions.NoFilesToCommitError('No files to commit')
 
         commits[commit_id] = dict(
+            author=author,
+            author_email=author_email,
             message=message,
             date=str(commit_datetime),
             objects=commit_objects,
