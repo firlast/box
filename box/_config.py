@@ -21,9 +21,9 @@ def set_author(name: str = None, email: str = None) -> None:
 
     if name:
         author_info['name'] = name
-    
+
     if email:
         author_info['email'] = email
 
     with open(BOX_CONFIG_PATH, 'w') as file:
-        json.dump(author_info, file, indent=2)
+        json.dump({'author': author_info}, file, indent=2)
