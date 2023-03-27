@@ -17,7 +17,7 @@
 
 import sys
 import time
-from os import path, mkdir
+from os import path, makedirs
 from typing import Union
 
 from argeasy import ArgEasy
@@ -50,8 +50,7 @@ def _init() -> None:
         print(f'\033[33mRepository already started in {repr(REPO_PATH)}\033[m')
         sys.exit(1)
     else:
-        mkdir(REPO_PATH)
-        mkdir(OBJECTS_PATH)
+        makedirs(OBJECTS_PATH)
         print(f'\033[32mNew repository started in {repr(REPO_PATH)}\033[m')
 
 
