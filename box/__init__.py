@@ -15,7 +15,4 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-from .tracker import Tracker
-from .commit import Commit
-
 __version__ = '0.1.0'
