@@ -135,7 +135,7 @@ class Commit:
 
         return merged
 
-    def _create_commit_objects(self, files: list, commit_id: str) -> dict:
+    def _create_commit_objects(self, files: list, _id: str) -> dict:
         tracked = self._tracker.get_tracked()
         commit_objects = {}
 
@@ -145,7 +145,7 @@ class Commit:
                 raise exceptions.FileNotTrackedError(f'File "{file}" not tracked')
 
         for file in files:
-            obj_id = utils.generate_id(commit_id, file)
+            obj_id = utils.generate_id(_id, file)
             commit_objects[file] = obj_id
             file_info = tracked[file]
 
