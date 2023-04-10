@@ -10,8 +10,8 @@ sys.path.insert(0, './')
 from box import tracker
 from box import commit
 
-FILE_TESTS_DIR = os.path.join('./tests', 'files')
-REPO_DIR = os.path.join('./tests', '.box')
+FILE_TESTS_DIR = os.path.join('tests', 'files')
+REPO_DIR = os.path.join('tests', '.box')
 OBJECT_DIR = os.path.join(REPO_DIR, 'objects')
 
 if os.path.isdir(FILE_TESTS_DIR):
