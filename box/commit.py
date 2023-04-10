@@ -40,9 +40,10 @@ class Commit:
 
         self._commits = self._get_commits()
 
-    def _dump_commit_file(self, data: dict) -> None:
+    def _dump_commit_file(self, commits: dict) -> None:
+        self._commits = commits
         with open(self._commit_file, 'w') as file:
-            json.dump(data, file, indent=2)
+            json.dump(commits, file, indent=2)
 
     def _create_object(self, file_diff: dict, obj_id: str) -> None:
         object_path = path.join(self._obj_file, obj_id)
@@ -225,7 +226,6 @@ class Commit:
         commit_id = sha1(_commit_id_parts.encode()).hexdigest()
         commits[commit_id] = commit_data
 
-        self._commits = commits
         self._dump_commit_file(commits)
         return commit_id
 
