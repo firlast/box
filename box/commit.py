@@ -106,8 +106,8 @@ class Commit:
     def get_commits(self, until_commit_id: str = None) -> dict:
         """
         Get all commits in `dict` format. The commit
-        data contains commit datetime, message and
-        objects references.
+        data contains author name and email, commit datetime,
+        message and objects references.
 
         :param until_commit_id: Get all commits until a commit ID.
         :return: Commits
