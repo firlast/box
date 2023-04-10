@@ -84,13 +84,10 @@ class Commit:
 
         return commits
 
-    def _get_commit_hash(self, commit_id: str) -> bytes:
-        commits = self.get_commits()
-        commit: dict = commits[commit_id].copy()
-
+    def _get_commit_hash(self, commit: dict) -> bytes:
         objects_hashes = [self._get_object_hash(obj) for obj in commit.pop('objects').values()]
         objects_sum_hash = md5(b''.join(objects_hashes)).hexdigest()
-        commit_info = '.'.join([commit_id, objects_sum_hash, *commit.values()])
+        commit_info = '.'.join([objects_sum_hash, *commit.values()])
         _hash = md5(commit_info.encode()).hexdigest()
 
         return _hash
@@ -99,8 +96,7 @@ class Commit:
         commits = self.get_commits()
 
         if commits:
-            commit_id = list(commits.keys())[-1]
-            _hash = self._get_commit_hash(commit_id)
+            _hash = self._get_commit_hash(list(commits.values())[-1])
         else:
             _hash = ''
 
@@ -243,7 +239,7 @@ class Commit:
 
         for commit_id in commits.keys():
             if commits[commit_id]['phash'] == last_hash:
-                last_hash = self._get_commit_hash(commit_id)
+                last_hash = self._get_commit_hash(commits[commit_id])
             else:
                 return False
         
