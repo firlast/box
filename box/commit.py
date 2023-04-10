@@ -17,7 +17,7 @@
 
 import json
 import marshal
-from hashlib import md5
+from hashlib import md5, sha1
 from os import path
 from typing import List
 from datetime import datetime
@@ -217,11 +217,12 @@ class Commit:
             author_email=author_email,
             message=message,
             date=str(commit_datetime),
-            objects=commit_objects,
-            phash=self._get_last_commit_hash()
+            objects=commit_objects
         )
 
-        commit_id = self._get_commit_hash(commit_data)
+        _last_hash = self._get_last_commit_hash()
+        _commit_id_parts = '.'.join((self._get_commit_hash(commit_data), _last_hash))
+        commit_id = sha1(_commit_id_parts.encode()).hexdigest()
         commits[commit_id] = commit_data
 
         self._commits = commits
