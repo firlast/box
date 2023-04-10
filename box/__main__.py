@@ -180,9 +180,6 @@ def _diff() -> None:
                         print(f'    \033[32m{number} | ++ {line}\033[m')
 
                 print()
-        else:
-            print('\033[1;31mCannot get difference of binary files\033[m')
-            sys.exit(1)
 
 
 def _integrity():
