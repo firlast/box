@@ -244,7 +244,7 @@ class Commit:
 
         for commit_id in commits.keys():
             c_hash = self._get_commit_hash(commits[commit_id])
-            sum_hash = sha1(''.join((c_hash, last_hash)).encode())
+            sum_hash = sha1('.'.join((c_hash, last_hash)).encode())
             if commits[commit_id] == sum_hash.hexdigest():
                 last_hash = c_hash
             else:
