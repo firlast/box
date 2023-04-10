@@ -174,8 +174,8 @@ class TestCommit(bupytest.UnitTest):
         self.assert_expected(
             value=file_1_object_lines,
             expected={
-                '1': 'This is a test!\n',
-                '2': 'A big test!'
+                1: 'This is a test!\n',
+                2: 'A big test!'
             }
         )
 
@@ -183,6 +183,6 @@ class TestCommit(bupytest.UnitTest):
         self.assert_expected(
             value=file_2_object_lines,
             expected={
-                '1': None
+                1: None
             }
         )
