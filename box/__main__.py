@@ -188,10 +188,10 @@ def _diff() -> None:
 def _integrity():
     if commit.check_integrity():
         print('\033[1;32mCommits without external changes\033[m')
-        print(f'\033[33m{len(commit.get_commits())} commits checked\033[m')
     else:
         print('\033[1;31mSome commits were changed inappropriately\033[m')
-        print(f'\033[33m{len(commit.get_commits())} files checked\033[m')
+
+    print(f'\033[33m{len(commit.get_commits())} commits checked\033[m')
 
 
 def main() -> None:
