@@ -205,13 +205,13 @@ class Commit:
         commits = self.get_commits()
 
         commit_datetime = str(datetime.now().replace(microsecond=0))
-        commit_id = utils.generate_id(commit_datetime, message)
-        commit_objects = self._create_commit_objects(files, commit_id)
+        _id_parts = ''.join((author, author_email, message, commit_datetime))
+        commit_objects = self._create_commit_objects(files, _id_parts)
 
         if not commit_objects:
             raise exceptions.NoFilesToCommitError('No files to commit')
 
-        commits[commit_id] = dict(
+        commit_data = dict(
             author=author,
             author_email=author_email,
             message=message,
@@ -219,6 +219,9 @@ class Commit:
             objects=commit_objects,
             phash=self._get_last_commit_hash()
         )
+
+        commit_id = self._get_commit_hash(commit_data)
+        commits[commit_id] = commit_data
 
         self._commits = commits
         self._dump_commit_file(commits)
