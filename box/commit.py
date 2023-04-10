@@ -243,8 +243,9 @@ class Commit:
         last_hash = ''
 
         for commit_id in commits.keys():
-            if commits[commit_id]['phash'] == last_hash:
-                last_hash = self._get_commit_hash(commits[commit_id])
+            c_hash = self._get_commit_hash(commits[commit_id])
+            if commits[commit_id] == sha1(''.join((c_hash, last_hash))):
+                last_hash = c_hash
             else:
                 return False
         
