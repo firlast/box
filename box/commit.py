@@ -84,7 +84,7 @@ class Commit:
 
         return commits
 
-    def _get_commit_hash(self, commit: dict) -> bytes:
+    def _get_commit_hash(self, commit: dict) -> str:
         commit = commit.copy()
         objects_hashes = [self._get_object_hash(obj) for obj in commit.pop('objects').values()]
         objects_sum_hash = md5(b''.join(objects_hashes)).hexdigest()
