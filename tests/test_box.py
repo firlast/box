@@ -186,3 +186,11 @@ class TestCommit(bupytest.UnitTest):
                 1: None
             }
         )
+
+
+class TestIntegrity(bupytest.UnitTest):
+    def __init__(self):
+        super().__init__()
+
+    def test_check_integrity(self):
+        self.assert_true(_commit.check_integrity())
