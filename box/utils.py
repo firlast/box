@@ -21,7 +21,7 @@ from secrets import token_hex
 
 def enumerate_lines(file_lines: list) -> dict:
     lines = enumerate(file_lines)
-    return dict((str(ln), l) for ln, l in lines)
+    return dict((ln, l) for ln, l in lines)
 
 
 def difference_lines(older_enum_lines: dict, new_enum_lines: dict) -> dict:
