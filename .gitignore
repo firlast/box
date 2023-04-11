@@ -9,3 +9,7 @@ tests/files
 
 # box repository
 *.box
+
+# build
+*.egg-info/
+dist/
