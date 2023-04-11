@@ -38,7 +38,9 @@ commit = Commit(REPO_PATH)
 
 
 def _get_uncommitted_files(tracked: dict) -> list:
-    return [filepath for filepath, info in tracked.items() if not info['committed']]
+    uncommitted = [filepath for filepath, info in tracked.items() if not info['committed']]
+    changed_files = [filepath for filepath, info in tracked.items() if info['hash'] != tracker.get_file_hash(filepath)]
+    return (*uncommitted, *changed_files)
 
 
 def _get_untracked_files(non_ignored: list, tracked: dict) -> list:
