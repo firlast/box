@@ -1,5 +1,6 @@
 import os
 import sys
+import json
 import shutil
 import marshal
 
@@ -215,3 +216,13 @@ class TestIntegrity(bupytest.UnitTest):
         with open(file_1_object_path, 'wb') as obj:
             obj.write(original_content)
 
+    def test_commit_data_change_detect(self):
+        commits = _commit.get_commits()
+        last_commit = list(commits.keys())[-1]
+
+        commits[last_commit]['author'] = 'Anonymous User'
+        
+        with open(os.path.join(REPO_DIR, 'commits.json'), 'w') as file:
+            json.dump(commits, file)
+
+        self.assert_false(_commit.check_integrity())
