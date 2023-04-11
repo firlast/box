@@ -194,3 +194,24 @@ class TestIntegrity(bupytest.UnitTest):
 
     def test_check_integrity(self):
         self.assert_true(_commit.check_integrity())
+
+    def test_external_change_object(self):
+        commits = _commit.get_commits()
+        last_commit = list(commits.values())[-1]
+        commit_objects = last_commit['objects']
+
+        file_1_object_id = commit_objects[TEST_FILE_1]
+        file_1_object_path = os.path.join(OBJECT_DIR, file_1_object_id)
+
+        with open(file_1_object_path, 'rb') as obj:
+            original_content = obj.read()
+
+        with open(file_1_object_path, 'wb') as obj:
+            obj.write(b'changed content')
+
+        self.assert_false(_commit.check_integrity())
+
+        # rewrite original content to object
+        with open(file_1_object_path, 'wb') as obj:
+            obj.write(original_content)
+
