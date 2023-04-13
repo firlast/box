@@ -33,8 +33,8 @@ from . import utils
 REPO_PATH = '.box'
 OBJECTS_PATH = path.join(REPO_PATH, 'objects')
 
-tracker = Tracker(REPO_PATH)
-commit = Commit(REPO_PATH)
+tracker = Tracker()
+commit = Commit()
 
 
 def _get_uncommitted_files(tracked: dict) -> list:
