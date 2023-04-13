@@ -12,7 +12,7 @@ from box import tracker
 from box import commit
 
 FILE_TESTS_DIR = os.path.join('tests', 'files')
-REPO_DIR = os.path.join('tests', '.box')
+REPO_DIR = '.box'
 OBJECT_DIR = os.path.join(REPO_DIR, 'objects')
 
 if os.path.isdir(FILE_TESTS_DIR):
@@ -55,8 +55,8 @@ with open(TEST_FILE_2, 'w') as file:
     file.write(TEST_FILE_2_CONTENT)
 
 
-_tracker = tracker.Tracker(REPO_DIR)
-_commit = commit.Commit(REPO_DIR)
+_tracker = tracker.Tracker()
+_commit = commit.Commit()
 
 
 class TestTracker(bupytest.UnitTest):
