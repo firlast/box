@@ -23,13 +23,12 @@ from . import exceptions
 
 
 class Tracker:
-    def __init__(self, repo_path: str) -> None:
+    def __init__(self) -> None:
         """
         Create a new instance from the Tracker class.
-        :param repo_path: Repository path
         """
 
-        self._tracker_file = path.join(repo_path, 'tracker.json')
+        self._tracker_file = path.join('.box', 'tracker.json')
 
     @staticmethod
     def get_file_hash(filepath: str) -> str:

@@ -28,15 +28,16 @@ from . import utils
 
 
 class Commit:
-    def __init__(self, repo_path: str) -> None:
+    def __init__(self) -> None:
         """
         This class handles everything about `commits`.
-        :param repo_path: Repository path
         """
+
+        repo_path = '.box'
 
         self._commit_file = path.join(repo_path, 'commits.json')
         self._obj_file = path.join(repo_path, 'objects')
-        self._tracker = Tracker(repo_path)
+        self._tracker = Tracker()
 
         self._commits = self._get_commits()
 
