@@ -15,6 +15,24 @@
 
 Box is an open-source version control system **written in Python** that allows users to manage changes to their projects efficiently and collaboratively. With Box, you can control the history of **changes made to files**, track issues and bugs, and collaborate with other developers in a safe and secure environment. With an **intuitive interface** and customizable features, Box is a complete solution for development teams looking for an affordable and easy-to-use version control system. If you are looking for an efficient and organized way to manage your project versions, Box is a smart and affordable choice.
 
+## Getting Started with Box
+
+You can install Box version control with the `pip` package manager:
+
+```
+pip install box
+```
+
+Or, if you prefer, clone the official repository of the project and perform the manual installation by running the `setup.py` script. Here:
+
+```
+git clone https://github.com/firlast/box.git
+cd box/
+python3 setup.py install
+```
+
+After that, you can continue to learn a lot more about Box by reading the [official project documentation](https://github.com/firlast/box/tree/master/docs).
+
 ## License
 
 ```text
