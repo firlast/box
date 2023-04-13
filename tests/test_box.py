@@ -11,9 +11,9 @@ sys.path.insert(0, './')
 from box import tracker
 from box import commit
 
-FILE_TESTS_DIR = os.path.join('tests', 'files')
 REPO_DIR = '.box'
 OBJECT_DIR = os.path.join(REPO_DIR, 'objects')
+FILE_TESTS_DIR = os.path.join('tests', 'files')
 
 if os.path.isdir(FILE_TESTS_DIR):
     shutil.rmtree(FILE_TESTS_DIR, ignore_errors=True)
