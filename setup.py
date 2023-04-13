@@ -15,6 +15,7 @@ setup(
     url='https://github.com/firlast/box',
     long_description=readme,
     long_description_content_type='text/markdown',
+    license='GNU GPLv2',
     python_requires='>=3.7',
     install_requires=['argeasy==3.0.0'],
     entry_points={
