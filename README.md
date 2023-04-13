@@ -31,7 +31,11 @@ cd box/
 python3 setup.py install
 ```
 
-After that, you can continue to learn a lot more about Box by reading the [official project documentation](https://github.com/firlast/box/tree/master/docs).
+### Links
+
+- [Official project documentation](https://github.com/firlast/box/tree/master/docs)
+- [GitHub Releases](https://github.com/firlast/box/releases)
+- [PyPI Project](https://pypi.org/project/box)
 
 ## License
 
