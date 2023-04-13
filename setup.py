@@ -2,6 +2,9 @@ from setuptools import setup
 
 from box.__init__ import __version__
 
+with open('README.md') as file:
+    readme = file.read()
+
 setup(
     author='Firlast',
     author_email='firlastinc@gmail.com',
@@ -10,6 +13,8 @@ setup(
     version=__version__,
     packages=['box'],
     url='https://github.com/firlast/box',
+    long_description=readme,
+    long_description_content_type='text/markdown',
     python_requires='>=3.7',
     install_requires=['argeasy==3.0.0'],
     entry_points={
