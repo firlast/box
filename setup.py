@@ -23,7 +23,7 @@ setup(
             'box = box.__main__:main'
         ]
     },
-    keywords=['version', 'control', 'versioning', 'file'],
+    keywords=['version', 'control', 'versioning', 'vcs'],
     classifiers=[
         'License :: OSI Approved :: GNU General Public License v2 (GPLv2)',
         'Development Status :: 5 - Production/Stable',
