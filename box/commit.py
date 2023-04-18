@@ -153,7 +153,6 @@ class Commit:
         tracked = self._tracker.get_tracked()
         commit_objects = {}
 
-        # check if all files are tracked
         for file in files:
             if file not in tracked:
                 raise exceptions.FileNotTrackedError(f'File "{file}" not tracked')
