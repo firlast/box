@@ -136,6 +136,15 @@ class Commit:
         return self._commits
 
     def merge_objects(self, file: str) -> dict:
+        """Merge all objects from file. The result is a
+        dictionary with enumerated lines.
+
+        :param file: File to merge
+        :type file: str
+        :return: Merged objects
+        :rtype: dict
+        """
+
         file_commits = self._get_file_commits(file)
         file_objects = [self._get_object(commit['objects'][file]) for commit in file_commits.values()]
         return self._merge_lines(file_objects)
