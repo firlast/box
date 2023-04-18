@@ -105,6 +105,13 @@ class Commit:
 
         return _hash
 
+    def _merge_lines(self, objects: list) -> dict:
+        merged = {}
+        for obj in objects:
+            merged.update(obj)
+
+        return merged
+
     def get_commits(self, until_commit_id: str = None) -> dict:
         """
         Get all commits in `dict` format. The commit
@@ -131,12 +138,7 @@ class Commit:
     def merge_objects(self, file: str) -> dict:
         file_commits = self._get_file_commits(file)
         file_objects = [self._get_object(commit['objects'][file]) for commit in file_commits.values()]
-        merged = {}
-
-        for file_obj in file_objects:
-            merged.update(file_obj)
-
-        return merged
+        return self._merge_lines(file_objects)
 
     def _create_commit_objects(self, files: list, _id: str) -> dict:
         tracked = self._tracker.get_tracked()
