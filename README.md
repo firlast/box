@@ -6,7 +6,7 @@
         <img alt="GitHub release (latest by date including pre-releases)" src="https://img.shields.io/github/v/release/firlast/box?include_prereleases">
     </a>
     <a href="https://github.com/firlast/box/blob/master/LICENSE" style="margin-right: 5px; margin-left: 5px">
-        <img alt="PyPI - License" src="https://img.shields.io/pypi/l/box">
+        <img alt="PyPI - License" src="https://img.shields.io/pypi/l/box-vcs">
     </a>
 </p>
 
