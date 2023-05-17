@@ -8,7 +8,7 @@ with open('README.md') as file:
 setup(
     author='Firlast',
     author_email='firlastinc@gmail.com',
-    name='box',
+    name='box-vcs',
     description='Simple and fast file versioning with Box',
     version=__version__,
     packages=['box'],
