@@ -14,7 +14,13 @@ Box is an open-source version control system **written in Python** that allows u
 
 ## Getting Started with Box
 
-You can install Box version control cloning the official repository of the project and perform the manual installation by running the `setup.py` script. Here:
+Installing Box using PIP from PyPI package manager:
+
+```
+pip install box-vcs
+```
+
+Or you can install Box version control cloning the official repository of the project and perform the manual installation by running the `setup.py` script. Here:
 
 ```
 git clone https://github.com/firlast/box.git
@@ -26,6 +32,7 @@ python3 setup.py install
 
 - [Official project documentation](https://github.com/firlast/box/tree/master/docs)
 - [GitHub Releases](https://github.com/firlast/box/releases)
+- [PyPI project](https://pypi.org/project/box-vcs)
 
 ## License
 
