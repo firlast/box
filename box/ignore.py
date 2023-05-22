@@ -15,19 +15,19 @@
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 
-from os import path as os_path, walk as os_walk
+import os
 
 
 def _filter_filelist(path: str) -> str:
     if path.startswith('/'):
         path = path[1:]
 
-    return os_path.abspath(path)
+    return os.path.abspath(path)
 
 
 def _path_has_ignored(ignored: list, path: str) -> bool:
     for i in ignored:
-        if i in os_path.abspath(path):
+        if i in os.path.abspath(path):
             return True
 
 
@@ -49,10 +49,10 @@ def get_non_ignored() -> list:
     ignored = _load_ignore()
     non_ignored = []
 
-    for root, dirs, files in os_walk('.'):
+    for root, dirs, files in os.walk('.'):
         if not _path_has_ignored(ignored, root):
             for file in files:
-                filepath = os_path.join(root, file)
+                filepath = os.path.join(root, file)
                 if not _path_has_ignored(ignored, filepath):
                     non_ignored.append(filepath.replace('./', ''))
 
