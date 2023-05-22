@@ -19,10 +19,13 @@ import os
 
 
 def _filter_filelist(path: str) -> str:
-    if path.startswith('/'):
-        path = path[1:]
+    if not path.startswith('*'):
+        if path.startswith('/'):
+            path = path[1:]
 
-    return os.path.abspath(path)
+        return os.path.abspath(path)
+    else:
+        return path
 
 
 def _path_has_ignored(ignored: list, path: str) -> bool:
@@ -56,4 +59,8 @@ def get_non_ignored() -> list:
                 if not _path_has_ignored(ignored, filepath):
                     non_ignored.append(filepath.replace('./', ''))
 
-    return non_ignored
+    ignore_with = [i.replace('*', '') for i in ignored if i.startswith('*')]
+    check_ignored = lambda f: not any([f.endswith(a) for a in ignore_with])
+    filtered_non_ignored = [f for f in non_ignored if check_ignored(f)]
+
+    return filtered_non_ignored
