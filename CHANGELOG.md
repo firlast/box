@@ -31,3 +31,13 @@
 - New CLI flags to:
   - Filter commits log by author name
   - Filter commits log by author email
+
+# 0.2.1 (May 22, 2023)
+
+- [PyPI Release](https://pypi.org/project/box-vcs/0.2.1)
+- [GitHub Release](https://github.com/firlast/box/releases/tag/v0.2.1)
+- [Version documentation](https://github.com/firlast/box/blob/master/docs/0.2.0.md)
+
+## Features
+
+- Allow setting name and email before creating a repository
