@@ -146,15 +146,27 @@ def _commit(files: Union[list, str], message: str) -> None:
         print('\033[33mYou can only commit changed and tracked files\033[m')
 
 
-def _log() -> None:
+def _log(filter_by_name: str = None, filter_by_email: str = None) -> None:
     commits = commit.get_commits()
+    filtered_commits = []
 
-    for cid, cdata in reversed(commits.items()):
-        message = cdata['message']
-        date = cdata['date']
-        files = len(cdata['objects'])
-        author = cdata['author']
+    for cid, cdata in reversed(commits.items()):    
+        if filter_by_name:
+            if cdata['author'] == filter_by_name:
+                filtered_commits.append((cid, cdata))
+        elif filter_by_email:
+            if cdata['author_email'] == filter_by_email:
+                filtered_commits.append((cid, cdata))
+        else:
+            filtered_commits.append((cid, cdata))
+
+    for cid, cdata in filtered_commits:
         author_email = cdata['author_email']
+        files = len(cdata['objects'])
+        message = cdata['message']
+        author = cdata['author']
+        date = cdata['date']
+
         print(f'{files} file(s) in \033[34;4m{cid[:7]}\033[m by {author} <{author_email}> '
               f'({date}) \033[33m{repr(message)}\033[m')
 
@@ -236,7 +248,7 @@ def main() -> None:
     elif args.status:
         _status()
     elif args.log:
-        _log()
+        _log(args.filter_by_name, args.filter_by_email)
     elif args.commit is not None:
         if args.am:
             _commit('*', args.am)
