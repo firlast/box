@@ -233,7 +233,7 @@ def main() -> None:
 
     args = parser.parse()
 
-    if not args.init and not path.isdir(OBJECTS_PATH):
+    if not path.isdir(OBJECTS_PATH) and not any((args.init, args.config)):
         print('\033[1;31mRepository not found\033[m')
         print('\033[33mCreate a repository with "init" command\033[m')
         sys.exit(1)
