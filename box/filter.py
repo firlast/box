@@ -19,6 +19,5 @@ class Filter:
             commit_date = datetime.strptime(commits[cid]['date'], '%Y-%m-%d %H:%M:%S.%f')
             return date == commit_date.strftime('%Y-%m-%d')
 
-        filtered_cid = filter(fbd, commits)
-        filtered_commits = {cid: commits[cid] for cid in filtered_cid}
+        filtered_commits = {cid: commits[cid] for cid in filter(fbd, commits)}
         return filtered_commits
