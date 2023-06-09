@@ -13,3 +13,12 @@ class Filter:
         filtered_cid = filter(filter_by_author, commits)
 
         return {cid: commits[cid] for cid in filtered_cid}
+
+    def _filter_by_date(self, commits: dict, date: str):
+        def fbd(cid):
+            commit_date = datetime.strptime(commits[cid]['date'], '%Y-%m-%d %H:%M:%S.%f')
+            return date == commit_date.strftime('%Y-%m-%d')
+
+        filtered_cid = filter(fbd, commits)
+        filtered_commits = {cid: commits[cid] for cid in filtered_cid}
+        return filtered_commits
