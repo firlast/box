@@ -248,7 +248,7 @@ def main() -> None:
     elif args.status:
         _status()
     elif args.log:
-        _log(args.by_name, args.by_email)
+        _log(args.filter_by_name, args.filter_by_email)
     elif args.commit is not None:
         if args.am:
             _commit('*', args.am)
