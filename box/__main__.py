@@ -22,13 +22,14 @@ from typing import Union
 
 from argeasy import ArgEasy
 
-from .__init__ import __version__
-from .tracker import Tracker
-from .commit import Commit
-from .ignore import get_non_ignored
 from . import _config
 from . import exceptions
 from . import utils
+from .tracker import Tracker
+from .commit import Commit
+from .filter import Filter
+from .__init__ import __version__
+from .ignore import get_non_ignored
 
 REPO_PATH = '.box'
 OBJECTS_PATH = path.join(REPO_PATH, 'objects')
@@ -146,21 +147,15 @@ def _commit(files: Union[list, str], message: str) -> None:
         print('\033[33mYou can only commit changed and tracked files\033[m')
 
 
-def _log(by_name: str = None, by_email: str = None) -> None:
+def _log(by_name: str = None, by_email: str = None, by_date: str = None) -> None:
+    _filter = Filter()
+
     commits = commit.get_commits()
-    filtered_commits = []
+    commits = reversed(commits.items())
+    filtered_commits = _filter.filter(dict(commits), by_name=by_name,
+                                      by_email=by_email, by_date=by_date)
 
-    for cid, cdata in reversed(commits.items()):    
-        if by_name:
-            if cdata['author'] == by_name:
-                filtered_commits.append((cid, cdata))
-        elif by_email:
-            if cdata['author_email'] == by_email:
-                filtered_commits.append((cid, cdata))
-        else:
-            filtered_commits.append((cid, cdata))
-
-    for cid, cdata in filtered_commits:
+    for cid, cdata in filtered_commits.items():
         author_email = cdata['author_email']
         files = len(cdata['objects'])
         message = cdata['message']
