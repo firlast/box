@@ -42,6 +42,7 @@ def _load_ignore() -> list:
         ignored = []
     else:
         filelist = [file.replace('\n', '') for file in filelist]
+        filelist = [file for file in filelist if file]
         ignored = list(map(_filter_filelist, filelist))
 
     ignored.append('.box')
