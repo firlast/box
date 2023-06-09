@@ -1,5 +1,6 @@
 <h1 align="center">Box</h1>
-<p align="center">Fast and simple file versioning</p>
+<p align="center">Fast, easy-to-use file versioning.</p>
+<p align="center">Make the most of version control written entirely in Python.</p>
 
 <p align="center">
     <a href="https://github.com/firlast/box/releases">
