@@ -17,7 +17,7 @@ setup(
     long_description_content_type='text/markdown',
     license='GNU GPLv2',
     python_requires='>=3.7',
-    install_requires=['argeasy==3.0.0'],
+    install_requires=['argeasy==3.1.0'],
     entry_points={
         'console_scripts': [
             'box = box.__main__:main'
