@@ -9,7 +9,7 @@ setup(
     author='Firlast',
     author_email='firlastinc@gmail.com',
     name='box-vcs',
-    description='Simple and fast file versioning with Box',
+    description='Fast, easy-to-use file versioning with Box',
     version=__version__,
     packages=['box'],
     url='https://github.com/firlast/box',
