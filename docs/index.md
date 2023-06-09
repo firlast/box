@@ -16,6 +16,7 @@ Box is an open-source version control system **written in Python** that allows u
 
 - [Version 0.1.0 (April 13, 2023)](https://github.com/firlast/box/blob/master/docs/0.1.0.md)
 - [Version 0.2.0 (May 22, 2023)](https://github.com/firlast/box/blob/master/docs/0.2.0.md)
+- [Version 0.3.0 (June 09, 2023)](https://github.com/firlast/box/blob/master/docs/0.3.0.md)
 
 ## License
 

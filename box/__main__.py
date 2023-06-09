@@ -22,13 +22,14 @@ from typing import Union
 
 from argeasy import ArgEasy
 
-from .__init__ import __version__
-from .tracker import Tracker
-from .commit import Commit
-from .ignore import get_non_ignored
 from . import _config
 from . import exceptions
 from . import utils
+from .tracker import Tracker
+from .commit import Commit
+from .filter import Filter
+from .__init__ import __version__
+from .ignore import get_non_ignored
 
 REPO_PATH = '.box'
 OBJECTS_PATH = path.join(REPO_PATH, 'objects')
@@ -146,21 +147,15 @@ def _commit(files: Union[list, str], message: str) -> None:
         print('\033[33mYou can only commit changed and tracked files\033[m')
 
 
-def _log(filter_by_name: str = None, filter_by_email: str = None) -> None:
+def _log(by_name: str = None, by_email: str = None, by_date: str = None) -> None:
+    _filter = Filter()
+
     commits = commit.get_commits()
-    filtered_commits = []
+    commits = reversed(commits.items())
+    filtered_commits = _filter.filter(dict(commits), by_name=by_name,
+                                      by_email=by_email, by_date=by_date)
 
-    for cid, cdata in reversed(commits.items()):    
-        if filter_by_name:
-            if cdata['author'] == filter_by_name:
-                filtered_commits.append((cid, cdata))
-        elif filter_by_email:
-            if cdata['author_email'] == filter_by_email:
-                filtered_commits.append((cid, cdata))
-        else:
-            filtered_commits.append((cid, cdata))
-
-    for cid, cdata in filtered_commits:
+    for cid, cdata in filtered_commits.items():
         author_email = cdata['author_email']
         files = len(cdata['objects'])
         message = cdata['message']
@@ -229,6 +224,7 @@ def main() -> None:
     parser.add_flag('--email', 'Set author email')
 
     parser.add_flag('--filter-by-name', 'Filter log commit by author name')
+    parser.add_flag('--filter-by-date', 'Filter log commit by commit date')
     parser.add_flag('--filter-by-email', 'Filter log commit by author email')
 
     args = parser.parse()
@@ -248,9 +244,12 @@ def main() -> None:
     elif args.status:
         _status()
     elif args.log:
-        _log(args.filter_by_name, args.filter_by_email)
+        _log(args.filter_by_name, args.filter_by_email, args.filter_by_date)
     elif args.commit is not None:
-        if args.am:
+        if args.am and len(args.commit) > 0:
+            print(f'\033[1;31mThe "commit" command must not contain arguments when "-am" is present.\033[m')
+            print('\033[33mUse "commit <filename> -m" or "commit -am"\033[m')
+        elif args.am:
             _commit('*', args.am)
         else:
             _commit(args.commit, args.m)

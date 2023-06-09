@@ -38,6 +38,22 @@
 - [GitHub Release](https://github.com/firlast/box/releases/tag/v0.2.1)
 - [Version documentation](https://github.com/firlast/box/blob/master/docs/0.2.0.md)
 
-## Features
+## Fixes
 
 - Allow setting name and email before creating a repository
+
+# 0.3.0 (June 09, 2023)
+
+- [PyPI Release](https://pypi.org/project/box-vcs/0.3.0)
+- [GitHub Release](https://github.com/firlast/box/releases/tag/v0.3.0)
+- [Version documentation](https://github.com/firlast/box/blob/master/docs/0.3.0.md)
+
+## Features
+
+- Filter commits logs by commit date
+- Improve logs filter
+
+## Fixes
+
+- Preventing the root directory (./) from being accidentally ignored because of whitespace in the `.ignore` file
+- Preventing use of `-am` flag when files as parameter in `commit` command.

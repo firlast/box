@@ -9,7 +9,7 @@ setup(
     author='Firlast',
     author_email='firlastinc@gmail.com',
     name='box-vcs',
-    description='Simple and fast file versioning with Box',
+    description='Fast, easy-to-use file versioning with Box',
     version=__version__,
     packages=['box'],
     url='https://github.com/firlast/box',
@@ -17,7 +17,7 @@ setup(
     long_description_content_type='text/markdown',
     license='GNU GPLv2',
     python_requires='>=3.7',
-    install_requires=['argeasy==3.0.0'],
+    install_requires=['argeasy==3.1.0'],
     entry_points={
         'console_scripts': [
             'box = box.__main__:main'
