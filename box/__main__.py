@@ -246,7 +246,10 @@ def main() -> None:
     elif args.log:
         _log(args.filter_by_name, args.filter_by_email, args.filter_by_date)
     elif args.commit is not None:
-        if args.am:
+        if args.am and len(args.commit) > 0:
+            print(f'\033[1;31mThe "commit" command must not contain arguments when "-am" is present.\033[m')
+            print('\033[33mUse "commit <filename> -m" or "commit -am"\033[m')
+        elif args.am:
             _commit('*', args.am)
         else:
             _commit(args.commit, args.m)
