@@ -16,7 +16,7 @@ class Filter:
 
     def _filter_by_date(self, commits: dict, date: str) -> dict:
         def fbd(cid):
-            commit_date = datetime.strptime(commits[cid]['date'], '%Y-%m-%d %H:%M:%S.%f')
+            commit_date = datetime.strptime(commits[cid]['date'], '%Y-%m-%d %H:%M:%S')
             return date == commit_date.strftime('%Y-%m-%d')
 
         filtered_commits = {cid: commits[cid] for cid in filter(fbd, commits)}
