@@ -224,7 +224,7 @@ def main() -> None:
     parser.add_flag('--email', 'Set author email')
 
     parser.add_flag('--filter-by-name', 'Filter log commit by author name')
-    parser.add_flag('--filter-by-date', 'Filter log commit by commit date')
+    parser.add_flag('--filter-by-date', 'Filter log commit by date (format "YYYY-MM-DD")')
     parser.add_flag('--filter-by-email', 'Filter log commit by author email')
 
     args = parser.parse()
