@@ -38,7 +38,7 @@ tracker = Tracker()
 commit = Commit()
 
 
-def _get_uncommitted_files(tracked: dict) -> list:
+def _get_uncommitted_files(tracked: dict) -> tuple:
     uncommitted = [filepath for filepath, info in tracked.items() if not info['committed']]
     changed_files = [filepath for filepath, info in tracked.items() if info['hash'] != tracker.get_file_hash(filepath)]
     return (*uncommitted, *changed_files)
