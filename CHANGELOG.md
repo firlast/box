@@ -57,3 +57,14 @@
 
 - Preventing the root directory (./) from being accidentally ignored because of whitespace in the `.ignore` file
 - Preventing use of `-am` flag when files as parameter in `commit` command.
+
+# 0.4.0 (June 11, 2023)
+
+- [PyPI Release](https://pypi.org/project/box-vcs/0.4.0)
+- [GitHub Release](https://github.com/firlast/box/releases/tag/v0.4.0)
+- [Version documentation](https://github.com/firlast/box/blob/master/docs/0.4.0.md)
+
+## Features
+
+- Show date format in `--filter-by-date` help message
+- Showing only directory name if no files in the directory are being tracked
