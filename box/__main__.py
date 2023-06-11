@@ -44,7 +44,7 @@ def _get_uncommitted_files(tracked: dict) -> tuple:
     return (*uncommitted, *changed_files)
 
 
-def _get_untracked_files(non_ignored: list, tracked: dict) -> list:
+def _get_untracked_files(non_ignored: list, tracked: dict) -> tuple:
     tracked_dirs = [path.dirname(f) for f in tracked]
     non_ignored_filtered = []
     dirs = []
@@ -63,7 +63,7 @@ def _get_untracked_files(non_ignored: list, tracked: dict) -> list:
     untracked_files = [file for file in non_ignored_filtered if file not in tracked]
     untracked_dirs = [_dir + '/' for _dir in dirs]
 
-    return [*untracked_dirs, *untracked_files]
+    return *untracked_dirs, *untracked_files
 
 
 def _init() -> None:
